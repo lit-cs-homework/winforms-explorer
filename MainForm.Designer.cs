@@ -75,9 +75,8 @@
             this.treeViewDir.SelectedImageIndex = 0;
             this.treeViewDir.Size = new System.Drawing.Size(316, 597);
             this.treeViewDir.TabIndex = 0;
-            this.treeViewDir.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
-            this.treeViewDir.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterExpand);
-            this.treeViewDir.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
+            this.treeViewDir.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.treeViewDir_AfterExpand);
+            this.treeViewDir.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewDir_AfterSelect);
             // 
             // imageList1
             // 
@@ -100,8 +99,7 @@
             this.listViewItem.TabIndex = 0;
             this.listViewItem.UseCompatibleStateImageBehavior = false;
             this.listViewItem.View = System.Windows.Forms.View.List;
-            this.listViewItem.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
-            this.listViewItem.DoubleClick += new System.EventHandler(this.listView1_DoubleClick);
+            this.listViewItem.DoubleClick += new System.EventHandler(this.listViewItem_DoubleClick);
             // 
             // imageList2
             // 
@@ -134,7 +132,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
             this.Text = "FileMgr";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.splitContainerDirItem.Panel1.ResumeLayout(false);
             this.splitContainerDirItem.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerDirItem)).EndInit();

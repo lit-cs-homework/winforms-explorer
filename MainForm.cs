@@ -66,26 +66,31 @@ namespace file_manage
             res = new string[0];
             return false;
         }
-        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+
+        protected ListViewItem newListViewItemFromDir(string directory)
+        {
+            var name = new DirectoryInfo(directory).Name;
+            return new ListViewItem(name)
+            {
+                Tag = directory,
+                ImageIndex = 2
+            };
+        }
+        private void treeViewDir_AfterSelect(object sender, TreeViewEventArgs e)
         {
             e.Node.SelectedImageIndex = e.Node.ImageIndex;
-            string folderpath = e.Node.FullPath;
+            string folderpath = e.Node.Tag.ToString();
             listViewItem.Items.Clear();
 
             var succ = TryGetDirectories(out string[] subDirectories, folderpath);
             if (!succ) return;
-            string[] files = Directory.GetFiles(folderpath);
-            foreach (string subDirectory in subDirectories)
+            foreach (var subDirectory in subDirectories)
             {
-                var name = new DirectoryInfo(subDirectory);
-                var item = new ListViewItem(name.Name, 0)
-                {
-                    //SubItems.Add("文件夹");
-                    Tag = subDirectory
-                };
+                var item = newListViewItemFromDir(subDirectory);
                 listViewItem.Items.Add(item);
             }
-            foreach (string file in files)
+            string[] files = Directory.GetFiles(folderpath);
+            foreach (var file in files)
             {
                 int image_index = 1;
                 string fileExtension = Path.GetExtension(file).ToLower();
@@ -98,7 +103,7 @@ namespace file_manage
                     image_index = 2;
                 }
 
-                ListViewItem item = new ListViewItem(Path.GetFileName(file), image_index)
+                var item = new ListViewItem(Path.GetFileName(file), image_index)
                 {
                     Tag = file
                 };
@@ -122,6 +127,7 @@ namespace file_manage
                 {
                     var directoryInfo = new DirectoryInfo(subFolder);
                     var treeNode = new TreeNode(directoryInfo.Name, 0, 0);
+                    
                     if (directoryInfo.Exists)
                     {
                         parentNode.Nodes.Add(treeNode);
@@ -134,7 +140,7 @@ namespace file_manage
         }
         protected static readonly string SubDirectoryDummyTag = "Dummy";
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
 
             DriveInfo[] drives = DriveInfo.GetDrives();
@@ -143,9 +149,9 @@ namespace file_manage
                 if (drive.DriveType == DriveType.Fixed) // 只添加固定磁盘驱动器
                 {
                     var key = drive.Name;
-                    //var name = key.TrimEnd('/', '\\');  // 去除 分隔符后缀
-                    //var text = $"{drive.VolumeLabel} ({name})"; // 模仿 Windows Explorer 行为
-                    var text = key;
+                    var name = key.TrimEnd('/', '\\');  // 去除 分隔符后缀
+                    var text = $"{drive.VolumeLabel} ({name})"; // 模仿 Windows Explorer 行为
+                    //var text = key;
                     TreeNode driveNode = treeViewDir.Nodes.Add(key, text, 2);
                     driveNode.Tag = drive.RootDirectory.FullName; // 保存路径信息到节点的 Tag 属性
                     driveNode.Nodes.Add(SubDirectoryDummyTag); // 添加一个虚拟子节点，表示有子文件夹
@@ -153,12 +159,8 @@ namespace file_manage
             }
         }
 
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //Console.WriteLine(e.ToString());
-        }
 
-        private void treeView1_AfterExpand(object sender, TreeViewEventArgs e)
+        private void treeViewDir_AfterExpand(object sender, TreeViewEventArgs e)
         {
             
             if (e.Node.Nodes.Count == 1 && e.Node.Nodes[0].Text == SubDirectoryDummyTag)
@@ -181,10 +183,10 @@ namespace file_manage
             }
         }
 
-        private void listView1_DoubleClick(object sender, EventArgs e)
+        private void listViewItem_DoubleClick(object sender, EventArgs e)
         {
             ListViewItem selectedListItem = listViewItem.SelectedItems[0];
-            string nodeName = selectedListItem.Tag.ToString(); // 获取选中节点的文本
+            var nodeName = selectedListItem.Tag.ToString(); // 获取选中节点Fullpath
             string itemName = selectedListItem.Text;
             if (File.Exists(nodeName))
             {
@@ -196,11 +198,9 @@ namespace file_manage
                 var succ = TryGetDirectories(out string[] directories, nodeName);
                 if (!succ) return;
                 string[] files = Directory.GetFiles(nodeName);
-                foreach (string directory in directories)
+                foreach (var directory in directories)
                 {
-                    DirectoryInfo foo = new DirectoryInfo(directory);
-                    ListViewItem item = new ListViewItem(foo.Name, 0);
-                    item.Tag = foo.FullName;
+                    var item = newListViewItemFromDir(directory);
                     listViewItem.Items.Add(item);
                 }
                 foreach (string file in files)
@@ -216,8 +216,10 @@ namespace file_manage
                         image_index = 2;
                     }
 
-                    ListViewItem item = new ListViewItem(Path.GetFileName(file), image_index);
-                    item.Tag = file;
+                    var item = new ListViewItem(Path.GetFileName(file), image_index)
+                    {
+                        Tag = file
+                    };
 
                     //item.SubItems.Add("文件");
                     listViewItem.Items.Add(item);
@@ -225,10 +227,5 @@ namespace file_manage
             }
         }
 
-        private void treeView1_AfterCheck(object sender, TreeViewEventArgs e)
-        {
-
-
-        }
     }
 }
