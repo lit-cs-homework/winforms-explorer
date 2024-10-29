@@ -35,10 +35,14 @@
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.listViewItem = new System.Windows.Forms.ListView();
             this.imageList2 = new System.Windows.Forms.ImageList(this.components);
+            this.splitContainerMain = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerDirItem)).BeginInit();
             this.splitContainerDirItem.Panel1.SuspendLayout();
             this.splitContainerDirItem.Panel2.SuspendLayout();
             this.splitContainerDirItem.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).BeginInit();
+            this.splitContainerMain.Panel2.SuspendLayout();
+            this.splitContainerMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainerDirItem
@@ -55,8 +59,8 @@
             // splitContainerDirItem.Panel2
             // 
             this.splitContainerDirItem.Panel2.Controls.Add(this.listViewItem);
-            this.splitContainerDirItem.Size = new System.Drawing.Size(1067, 600);
-            this.splitContainerDirItem.SplitterDistance = 309;
+            this.splitContainerDirItem.Size = new System.Drawing.Size(1093, 597);
+            this.splitContainerDirItem.SplitterDistance = 316;
             this.splitContainerDirItem.SplitterWidth = 5;
             this.splitContainerDirItem.TabIndex = 0;
             // 
@@ -69,7 +73,7 @@
             this.treeViewDir.Margin = new System.Windows.Forms.Padding(4);
             this.treeViewDir.Name = "treeViewDir";
             this.treeViewDir.SelectedImageIndex = 0;
-            this.treeViewDir.Size = new System.Drawing.Size(309, 600);
+            this.treeViewDir.Size = new System.Drawing.Size(316, 597);
             this.treeViewDir.TabIndex = 0;
             this.treeViewDir.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
             this.treeViewDir.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterExpand);
@@ -91,7 +95,7 @@
             this.listViewItem.Margin = new System.Windows.Forms.Padding(4);
             this.listViewItem.MultiSelect = false;
             this.listViewItem.Name = "listViewItem";
-            this.listViewItem.Size = new System.Drawing.Size(753, 600);
+            this.listViewItem.Size = new System.Drawing.Size(772, 597);
             this.listViewItem.SmallImageList = this.imageList2;
             this.listViewItem.TabIndex = 0;
             this.listViewItem.UseCompatibleStateImageBehavior = false;
@@ -107,12 +111,26 @@
             this.imageList2.Images.SetKeyName(1, "imageres 098.png");
             this.imageList2.Images.SetKeyName(2, "imageres 166.png");
             // 
+            // splitContainerMain
+            // 
+            this.splitContainerMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainerMain.Location = new System.Drawing.Point(0, 0);
+            this.splitContainerMain.Name = "splitContainerMain";
+            this.splitContainerMain.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainerMain.Panel2
+            // 
+            this.splitContainerMain.Panel2.Controls.Add(this.splitContainerDirItem);
+            this.splitContainerMain.Size = new System.Drawing.Size(1093, 656);
+            this.splitContainerMain.SplitterDistance = 55;
+            this.splitContainerMain.TabIndex = 1;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1067, 600);
-            this.Controls.Add(this.splitContainerDirItem);
+            this.ClientSize = new System.Drawing.Size(1093, 656);
+            this.Controls.Add(this.splitContainerMain);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
             this.Text = "FileMgr";
@@ -121,6 +139,9 @@
             this.splitContainerDirItem.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerDirItem)).EndInit();
             this.splitContainerDirItem.ResumeLayout(false);
+            this.splitContainerMain.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).EndInit();
+            this.splitContainerMain.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -132,6 +153,7 @@
         public System.Windows.Forms.ImageList imageList1;
         public System.Windows.Forms.ImageList imageList2;
         public System.Windows.Forms.ListView listViewItem;
+        private System.Windows.Forms.SplitContainer splitContainerMain;
     }
 }
 
