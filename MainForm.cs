@@ -79,6 +79,7 @@ namespace file_manage
         {
             var name = new DirectoryInfo(directory).Name;
             var res = new ListViewItem(name, Ord(ImageIndex.Dir));
+            res.Name = name;
             SetFullPath(res, directory);
             return res;
         }
@@ -105,10 +106,10 @@ namespace file_manage
                 Ord(ImageIndex.Archive) :
                 Ord(ImageIndex.File)
             ;
-        protected string GetFullPath(TreeNode node) => node.Tag.ToString();
-        protected void SetFullPath(TreeNode node, string fullPath) => node.Tag = fullPath;
+        protected string GetFullPath(TreeNode     node) => node.Tag.ToString();
         protected string GetFullPath(ListViewItem node) => node.Tag.ToString();
-        protected void SetFullPath(ListViewItem node, string fullPath) => node.Tag = fullPath;
+        protected void   SetFullPath(TreeNode     node, string fullPath) => node.Tag = fullPath;
+        protected void   SetFullPath(ListViewItem node, string fullPath) => node.Tag = fullPath;
         
         /// <summary>
         /// 虚拟子节点名称，表示parent未初始化（未将entry存为nodes),
@@ -198,9 +199,9 @@ namespace file_manage
         }
         private void treeViewDir_AfterExpand(object _sender, TreeViewEventArgs e)
         {
-            treeViewDirRender(e.Node);
+            init_treeViewDir_if_needed(e.Node);
         }
-        private void treeViewDirRender(TreeNode node)
+        private void init_treeViewDir_if_needed(TreeNode node)
         {
 
             if (node.Nodes.Count == 1 && node.Nodes[0].Text == SubDirectoryDummyTag)
