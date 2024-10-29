@@ -82,14 +82,18 @@ namespace file_manage
             SetFullPath(res, directory);
             return res;
         }
-        protected TreeNode newTreeNodeFromDir(string directory, TreeNode node)
+        protected TreeNode newTreeNodeFromDir(string directory)
         {
             var item = newListViewItemFromDir(directory);
-            var subNode = node.Nodes.Add(item.Name, item.Text, item.ImageIndex);
+            var subNode = new TreeNode(item.Text, item.ImageIndex, item.ImageIndex)
+            {
+                Name = item.Name
+            };
             //TreeNode subNode = e.Node.Nodes.Add(directoryInfo.Name, directoryInfo.Name, Ord(ImageIndex.Dir);
             //subNode.Tag = directoryInfo.FullName; // 保存路径信息到节点的 Tag 属性
 
             SetFullPath(subNode, GetFullPath(item));
+            subNode.Nodes.Add(SubDirectoryDummyTag); // 添加一个虚拟子节点，表示未初始化（未将entry存为nodes) (与已检查的空文件夹区分)
             return subNode;
         }
 
@@ -105,7 +109,7 @@ namespace file_manage
         protected void SetFullPath(TreeNode node, string fullPath) => node.Tag = fullPath;
         protected string GetFullPath(ListViewItem node) => node.Tag.ToString();
         protected void SetFullPath(ListViewItem node, string fullPath) => node.Tag = fullPath;
-
+        
         /// <summary>
         /// 虚拟子节点名称，表示parent未初始化（未将entry存为nodes),
         /// 因为Tag存的是abspath，所以不可能有其他项的 Tag 为 "Dummy"
@@ -144,7 +148,6 @@ namespace file_manage
 
         private void treeViewDir_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            e.Node.SelectedImageIndex = e.Node.ImageIndex;
             string folderpath = GetFullPath(e.Node);
             listViewItem.Items.Clear();
 
@@ -181,10 +184,9 @@ namespace file_manage
                 // 递归遍历子文件夹
                 foreach (var subFolder in subFolders)
                 {
-                    var directoryInfo = new DirectoryInfo(subFolder);
-                    var treeNode = new TreeNode(directoryInfo.Name, Ord(ImageIndex.Dir), 0);
+                    var treeNode = newTreeNodeFromDir(subFolder);
 
-                    if (directoryInfo.Exists)
+                    if (Directory.Exists(subFolder))
                     {
                         parentNode.Nodes.Add(treeNode);
                     }
@@ -212,8 +214,9 @@ namespace file_manage
                 if (!succ) return;
                 foreach (var subDirectory in subDirectories)
                 {
-                    var subNode = newTreeNodeFromDir(subDirectory, node);
-                    subNode.Nodes.Add(SubDirectoryDummyTag); // 添加一个虚拟子节点，表示未初始化（未将entry存为nodes)
+                    var subNode = newTreeNodeFromDir(subDirectory);
+                    node.Nodes.Add(subNode);
+                    
                 }
                 //ListDirsToNode(nodePath, ref e.Node.Nodes);
                 
