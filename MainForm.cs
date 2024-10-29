@@ -22,6 +22,8 @@ namespace file_manage
             InitializeComponent();
         }
 
+        protected void Error(string msg) => MessageBox.Show(msg);
+        protected void Error(string msg, string title) => MessageBox.Show(msg, title);
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
@@ -29,7 +31,15 @@ namespace file_manage
             string folderpath = e.Node.FullPath.ToString();
             listViewItem.Items.Clear();
 
-            string[] subDirectories = Directory.GetDirectories(folderpath);
+            string[] subDirectories;
+            try
+            {
+                subDirectories = Directory.GetDirectories(folderpath);
+            } catch (System.UnauthorizedAccessException exc)
+            {
+                Error(exc.Message, "权限不足");
+                return;
+            }
             string[] files = Directory.GetFiles(folderpath);
             foreach (string subDirectory in subDirectories)
             {
