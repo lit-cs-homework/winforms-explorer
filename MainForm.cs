@@ -229,11 +229,14 @@ namespace file_manage
             ListViewItem selectedListItem = listViewItem.SelectedItems[0];
 
             listViewItemRender(selectedListItem);
-            //var curTreeNode = treeViewDir.SelectedNode;
-            //curTreeNode.Nodes.Find()
+            var curTreeNode = treeViewDir.SelectedNode;
             //treeViewDirRender(newTreeNodeFromDir(selectedListItem.Tag.ToString(), curTreeNode));
             //curTreeNode.Collapse();
-            //var dir = Path.Combine(GetFullPath(curTreeNode), selectedListItem.Text);
+            var lastPart = selectedListItem.Text;
+            var dir = Path.Combine(GetFullPath(curTreeNode), lastPart);
+            init_treeViewDir_if_needed(curTreeNode);
+            curTreeNode = curTreeNode.Nodes.Find(lastPart, false)[0];
+            curTreeNode.Expand();
             //PopulateTreeView(dir, curTreeNode);
         }
         protected void listViewItemRender(ListViewItem selectedListItem)
