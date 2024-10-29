@@ -15,8 +15,16 @@ using System.Diagnostics;
 
 namespace file_manage
 {
+    public enum ImageIndex
+    {
+        Drive,
+        Dir,
+        Archive,
+        File,
+    }
     public partial class MainForm : Form
     {
+        public int Ord(ImageIndex index) => (int)index;
         public MainForm()
         {
             InitializeComponent();
@@ -70,12 +78,17 @@ namespace file_manage
         protected ListViewItem newListViewItemFromDir(string directory)
         {
             var name = new DirectoryInfo(directory).Name;
+            var list = new ListViewItem(name);
             return new ListViewItem(name)
             {
                 Tag = directory,
-                ImageIndex = 2
+                ImageIndex = Ord(ImageIndex.Dir)
             };
         }
+
+        protected HashSet<string> archivesExt = new HashSet<string>
+            { ".zip", ".rar", ".7z", ".tar", ".xz"}
+        ;
         private void treeViewDir_AfterSelect(object sender, TreeViewEventArgs e)
         {
             e.Node.SelectedImageIndex = e.Node.ImageIndex;
@@ -90,18 +103,13 @@ namespace file_manage
                 listViewItem.Items.Add(item);
             }
             string[] files = Directory.GetFiles(folderpath);
-            foreach (var file in files)
+            foreach (string file in files)
             {
-                int image_index = 1;
                 string fileExtension = Path.GetExtension(file).ToLower();
-                if (fileExtension == ".txt")
-                {
-                    image_index = 1;
-                }
-                else if(fileExtension ==".zip" || fileExtension == ".rar")
-                {
-                    image_index = 2;
-                }
+                var image_index = archivesExt.Contains(fileExtension) ?
+                    Ord(ImageIndex.Archive) :
+                    Ord(ImageIndex.File)
+                ;
 
                 var item = new ListViewItem(Path.GetFileName(file), image_index)
                 {
@@ -126,7 +134,7 @@ namespace file_manage
                 foreach (var subFolder in subFolders)
                 {
                     var directoryInfo = new DirectoryInfo(subFolder);
-                    var treeNode = new TreeNode(directoryInfo.Name, 0, 0);
+                    var treeNode = new TreeNode(directoryInfo.Name, Ord(ImageIndex.Dir), 0);
                     
                     if (directoryInfo.Exists)
                     {
@@ -152,7 +160,7 @@ namespace file_manage
                     var name = key.TrimEnd('/', '\\');  // 去除 分隔符后缀
                     var text = $"{drive.VolumeLabel} ({name})"; // 模仿 Windows Explorer 行为
                     //var text = key;
-                    TreeNode driveNode = treeViewDir.Nodes.Add(key, text, 2);
+                    TreeNode driveNode = treeViewDir.Nodes.Add(key, text, Ord(ImageIndex.Drive));
                     driveNode.Tag = drive.RootDirectory.FullName; // 保存路径信息到节点的 Tag 属性
                     driveNode.Nodes.Add(SubDirectoryDummyTag); // 添加一个虚拟子节点，表示有子文件夹
                 }
@@ -173,9 +181,12 @@ namespace file_manage
                 if (!succ) return;
                 foreach (var subDirectory in subDirectories)
                 {
-                    var directoryInfo = new DirectoryInfo(subDirectory);
-                    TreeNode subNode = e.Node.Nodes.Add(directoryInfo.Name, directoryInfo.Name, 0);
-                    subNode.Tag = directoryInfo.FullName; // 保存路径信息到节点的 Tag 属性
+                    var directoryInfo = newListViewItemFromDir(subDirectory);
+                    var subNode = e.Node.Nodes.Add(directoryInfo.Name, directoryInfo.Name, directoryInfo.ImageIndex);
+                    //TreeNode subNode = e.Node.Nodes.Add(directoryInfo.Name, directoryInfo.Name, Ord(ImageIndex.Dir);
+                    //subNode.Tag = directoryInfo.FullName; // 保存路径信息到节点的 Tag 属性
+                    subNode.Tag = directoryInfo.Tag;
+                    subNode.Text = directoryInfo.Text;
                     subNode.Nodes.Add(SubDirectoryDummyTag); // 添加一个虚拟子节点，表示有子文件夹
                 }
                 //ListDirsToNode(nodePath, ref e.Node.Nodes);

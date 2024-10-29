@@ -32,9 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.splitContainerDirItem = new System.Windows.Forms.SplitContainer();
             this.treeViewDir = new System.Windows.Forms.TreeView();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.imageListDirView = new System.Windows.Forms.ImageList(this.components);
             this.listViewItem = new System.Windows.Forms.ListView();
-            this.imageList2 = new System.Windows.Forms.ImageList(this.components);
             this.splitContainerMain = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerDirItem)).BeginInit();
             this.splitContainerDirItem.Panel1.SuspendLayout();
@@ -68,7 +67,7 @@
             // 
             this.treeViewDir.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeViewDir.ImageIndex = 2;
-            this.treeViewDir.ImageList = this.imageList1;
+            this.treeViewDir.ImageList = this.imageListDirView;
             this.treeViewDir.Location = new System.Drawing.Point(0, 0);
             this.treeViewDir.Margin = new System.Windows.Forms.Padding(4);
             this.treeViewDir.Name = "treeViewDir";
@@ -78,13 +77,14 @@
             this.treeViewDir.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.treeViewDir_AfterExpand);
             this.treeViewDir.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewDir_AfterSelect);
             // 
-            // imageList1
+            // imageListDirView
             // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "imageres 004.png");
-            this.imageList1.Images.SetKeyName(1, "imageres 006.png");
-            this.imageList1.Images.SetKeyName(2, "disk.png");
+            this.imageListDirView.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListDirView.ImageStream")));
+            this.imageListDirView.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListDirView.Images.SetKeyName(0, "disk.png");
+            this.imageListDirView.Images.SetKeyName(1, "imageres 004.png");
+            this.imageListDirView.Images.SetKeyName(2, "imageres 006.png");
+            this.imageListDirView.Images.SetKeyName(3, "txt-ico.jpg");
             // 
             // listViewItem
             // 
@@ -95,19 +95,11 @@
             this.listViewItem.MultiSelect = false;
             this.listViewItem.Name = "listViewItem";
             this.listViewItem.Size = new System.Drawing.Size(772, 597);
-            this.listViewItem.SmallImageList = this.imageList2;
+            this.listViewItem.SmallImageList = this.imageListDirView;
             this.listViewItem.TabIndex = 0;
             this.listViewItem.UseCompatibleStateImageBehavior = false;
             this.listViewItem.View = System.Windows.Forms.View.List;
             this.listViewItem.DoubleClick += new System.EventHandler(this.listViewItem_DoubleClick);
-            // 
-            // imageList2
-            // 
-            this.imageList2.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList2.ImageStream")));
-            this.imageList2.TransparentColor = System.Drawing.SystemColors.InfoText;
-            this.imageList2.Images.SetKeyName(0, "imageres 004.png");
-            this.imageList2.Images.SetKeyName(1, "imageres 098.png");
-            this.imageList2.Images.SetKeyName(2, "imageres 166.png");
             // 
             // splitContainerMain
             // 
@@ -148,8 +140,7 @@
 
         private System.Windows.Forms.SplitContainer splitContainerDirItem;
         private System.Windows.Forms.TreeView treeViewDir;
-        public System.Windows.Forms.ImageList imageList1;
-        public System.Windows.Forms.ImageList imageList2;
+        public System.Windows.Forms.ImageList imageListDirView;
         public System.Windows.Forms.ListView listViewItem;
         private System.Windows.Forms.SplitContainer splitContainerMain;
     }
