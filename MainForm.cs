@@ -85,10 +85,26 @@ namespace file_manage
                 ImageIndex = Ord(ImageIndex.Dir)
             };
         }
+        protected TreeNode newTreeNodeFromDir(string directory, TreeViewEventArgs e)
+        {
+            var directoryInfo = newListViewItemFromDir(directory);
+            var subNode = e.Node.Nodes.Add(directoryInfo.Name, directoryInfo.Name, directoryInfo.ImageIndex);
+            //TreeNode subNode = e.Node.Nodes.Add(directoryInfo.Name, directoryInfo.Name, Ord(ImageIndex.Dir);
+            //subNode.Tag = directoryInfo.FullName; // 保存路径信息到节点的 Tag 属性
+            subNode.Tag = directoryInfo.Tag;
+            subNode.Text = directoryInfo.Text;
+            return subNode;
+        }
 
         protected HashSet<string> archivesExt = new HashSet<string>
             { ".zip", ".rar", ".7z", ".tar", ".xz"}
         ;
+        protected int GetImageIndex(string filepath) => 
+            archivesExt.Contains(Path.GetExtension(filepath).ToLower()) ?
+                Ord(ImageIndex.Archive) :
+                Ord(ImageIndex.File)
+            ;
+
         private void treeViewDir_AfterSelect(object sender, TreeViewEventArgs e)
         {
             e.Node.SelectedImageIndex = e.Node.ImageIndex;
@@ -105,11 +121,7 @@ namespace file_manage
             string[] files = Directory.GetFiles(folderpath);
             foreach (string file in files)
             {
-                string fileExtension = Path.GetExtension(file).ToLower();
-                var image_index = archivesExt.Contains(fileExtension) ?
-                    Ord(ImageIndex.Archive) :
-                    Ord(ImageIndex.File)
-                ;
+                var image_index = GetImageIndex(file);
 
                 var item = new ListViewItem(Path.GetFileName(file), image_index)
                 {
@@ -154,15 +166,26 @@ namespace file_manage
             DriveInfo[] drives = DriveInfo.GetDrives();
             foreach (var drive in drives)
             {
-                if (drive.DriveType == DriveType.Fixed) // 只添加固定磁盘驱动器
+                switch (drive.DriveType)
                 {
-                    var key = drive.Name;
-                    var name = key.TrimEnd('/', '\\');  // 去除 分隔符后缀
-                    var text = $"{drive.VolumeLabel} ({name})"; // 模仿 Windows Explorer 行为
-                    //var text = key;
-                    TreeNode driveNode = treeViewDir.Nodes.Add(key, text, Ord(ImageIndex.Drive));
-                    driveNode.Tag = drive.RootDirectory.FullName; // 保存路径信息到节点的 Tag 属性
-                    driveNode.Nodes.Add(SubDirectoryDummyTag); // 添加一个虚拟子节点，表示有子文件夹
+                    // 磁盘驱动器
+                    case DriveType.Fixed:
+                    case DriveType.Removable: 
+                        {
+                            var key = drive.Name;
+                            var name = key.TrimEnd('/', '\\');  // 去除 分隔符后缀
+                            var text = $"{drive.VolumeLabel} ({name})"; // 模仿 Windows Explorer 行为
+                                                                        //var text = key;
+                            TreeNode driveNode = treeViewDir.Nodes.Add(key, text, Ord(ImageIndex.Drive));
+                            driveNode.Tag = drive.RootDirectory.FullName; // 保存路径信息到节点的 Tag 属性
+                            driveNode.Nodes.Add(SubDirectoryDummyTag); // 添加一个虚拟子节点，表示有子文件夹
+                        }
+                        break;
+                    case DriveType.Network:
+                        {
+                            // TODO
+                        }
+                        break;
                 }
             }
         }
@@ -181,12 +204,7 @@ namespace file_manage
                 if (!succ) return;
                 foreach (var subDirectory in subDirectories)
                 {
-                    var directoryInfo = newListViewItemFromDir(subDirectory);
-                    var subNode = e.Node.Nodes.Add(directoryInfo.Name, directoryInfo.Name, directoryInfo.ImageIndex);
-                    //TreeNode subNode = e.Node.Nodes.Add(directoryInfo.Name, directoryInfo.Name, Ord(ImageIndex.Dir);
-                    //subNode.Tag = directoryInfo.FullName; // 保存路径信息到节点的 Tag 属性
-                    subNode.Tag = directoryInfo.Tag;
-                    subNode.Text = directoryInfo.Text;
+                    var subNode = newTreeNodeFromDir(subDirectory, e);
                     subNode.Nodes.Add(SubDirectoryDummyTag); // 添加一个虚拟子节点，表示有子文件夹
                 }
                 //ListDirsToNode(nodePath, ref e.Node.Nodes);
@@ -197,9 +215,12 @@ namespace file_manage
         private void listViewItem_DoubleClick(object sender, EventArgs e)
         {
             ListViewItem selectedListItem = listViewItem.SelectedItems[0];
+            listViewItemRender(selectedListItem);
+        }
+        protected void listViewItemRender(ListViewItem selectedListItem)
+        {
             var nodeName = selectedListItem.Tag.ToString(); // 获取选中节点Fullpath
-            string itemName = selectedListItem.Text;
-            if (File.Exists(nodeName))
+            if (File.Exists(nodeName))  // is file
             {
                 Process.Start(nodeName);
             }
@@ -216,17 +237,7 @@ namespace file_manage
                 }
                 foreach (string file in files)
                 {
-                    int image_index = 1;
-                    string fileExtension = Path.GetExtension(file).ToLower();
-                    if (fileExtension == ".txt")
-                    {
-                        image_index = 1;
-                    }
-                    else if (fileExtension == ".zip" || fileExtension == ".rar")
-                    {
-                        image_index = 2;
-                    }
-
+                    int image_index = GetImageIndex(file);
                     var item = new ListViewItem(Path.GetFileName(file), image_index)
                     {
                         Tag = file
@@ -238,5 +249,13 @@ namespace file_manage
             }
         }
 
+        private void textBoxPath_KeyDown(object sender, KeyEventArgs e)
+        {
+            //if (e.KeyCode == Keys.Enter)
+            //{
+            //    MessageBox.Show("asd");
+            //    e.Handled = true;
+            //}
+        }
     }
 }
