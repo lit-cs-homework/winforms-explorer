@@ -139,7 +139,7 @@
             this.textBoxPath.Name = "textBoxPath";
             this.textBoxPath.Size = new System.Drawing.Size(890, 35);
             this.textBoxPath.TabIndex = 0;
-            this.textBoxPath.Visible = false;
+            this.textBoxPath.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxPath_KeyDown);
             // 
             // MainForm
             // 

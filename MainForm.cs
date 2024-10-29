@@ -78,21 +78,18 @@ namespace file_manage
         protected ListViewItem newListViewItemFromDir(string directory)
         {
             var name = new DirectoryInfo(directory).Name;
-            var list = new ListViewItem(name);
-            return new ListViewItem(name)
-            {
-                Tag = directory,
-                ImageIndex = Ord(ImageIndex.Dir)
-            };
+            var res = new ListViewItem(name, Ord(ImageIndex.Dir));
+            SetFullPath(res, directory);
+            return res;
         }
-        protected TreeNode newTreeNodeFromDir(string directory, TreeViewEventArgs e)
+        protected TreeNode newTreeNodeFromDir(string directory, TreeNode node)
         {
-            var directoryInfo = newListViewItemFromDir(directory);
-            var subNode = e.Node.Nodes.Add(directoryInfo.Name, directoryInfo.Name, directoryInfo.ImageIndex);
+            var item = newListViewItemFromDir(directory);
+            var subNode = node.Nodes.Add(item.Name, item.Text, item.ImageIndex);
             //TreeNode subNode = e.Node.Nodes.Add(directoryInfo.Name, directoryInfo.Name, Ord(ImageIndex.Dir);
             //subNode.Tag = directoryInfo.FullName; // 保存路径信息到节点的 Tag 属性
-            subNode.Tag = directoryInfo.Tag;
-            subNode.Text = directoryInfo.Text;
+
+            SetFullPath(subNode, GetFullPath(item));
             return subNode;
         }
 
@@ -104,11 +101,51 @@ namespace file_manage
                 Ord(ImageIndex.Archive) :
                 Ord(ImageIndex.File)
             ;
+        protected string GetFullPath(TreeNode node) => node.Tag.ToString();
+        protected void SetFullPath(TreeNode node, string fullPath) => node.Tag = fullPath;
+        protected string GetFullPath(ListViewItem node) => node.Tag.ToString();
+        protected void SetFullPath(ListViewItem node, string fullPath) => node.Tag = fullPath;
+
+        /// <summary>
+        /// 虚拟子节点名称，表示parent未初始化（未将entry存为nodes),
+        /// 因为Tag存的是abspath，所以不可能有其他项的 Tag 为 "Dummy"
+        /// </summary>
+        protected static readonly string SubDirectoryDummyTag = "Dummy";
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
+            DriveInfo[] drives = DriveInfo.GetDrives();
+            foreach (var drive in drives)
+            {
+                switch (drive.DriveType)
+                {
+                    // 磁盘驱动器
+                    case DriveType.Fixed:
+                    case DriveType.Removable:
+                        {
+                            var key = drive.Name;
+                            var name = key.TrimEnd('/', '\\');  // 去除 分隔符后缀
+                            var text = $"{drive.VolumeLabel} ({name})"; // 模仿 Windows Explorer 行为
+                                                                        //var text = key;
+                            TreeNode driveNode = treeViewDir.Nodes.Add(key, text, Ord(ImageIndex.Drive));
+                            SetFullPath(driveNode, drive.RootDirectory.FullName); // 保存路径信息到节点的 Tag 属性
+                            driveNode.Nodes.Add(SubDirectoryDummyTag); // 添加一个虚拟子节点，表示有子文件夹
+                        }
+                        break;
+                    case DriveType.Network:
+                        {
+                            // TODO
+                        }
+                        break;
+                }
+            }
+        }
 
         private void treeViewDir_AfterSelect(object sender, TreeViewEventArgs e)
         {
             e.Node.SelectedImageIndex = e.Node.ImageIndex;
-            string folderpath = e.Node.Tag.ToString();
+            string folderpath = GetFullPath(e.Node);
             listViewItem.Items.Clear();
 
             var succ = TryGetDirectories(out string[] subDirectories, folderpath);
@@ -123,22 +160,21 @@ namespace file_manage
             {
                 var image_index = GetImageIndex(file);
 
-                var item = new ListViewItem(Path.GetFileName(file), image_index)
-                {
-                    Tag = file
-                };
+                var item = new ListViewItem(Path.GetFileName(file), image_index);
+                SetFullPath(item, file);
 
                 //item.SubItems.Add("文件");
                 listViewItem.Items.Add(item);
             }
         }
 
+
         private void PopulateTreeView(string folderPath, TreeNode parentNode)
         {
             // 获取当前文件夹的所有子文件夹
             var succ = TryGetDirectories(out string[] subFolders, folderPath);
             if (!succ) return;
-            if (subFolders == null || subFolders.Length == 0 ) return;
+            if (subFolders == null || subFolders.Length == 0) return;
             else
             {
                 // 处理当前文件夹              
@@ -147,7 +183,7 @@ namespace file_manage
                 {
                     var directoryInfo = new DirectoryInfo(subFolder);
                     var treeNode = new TreeNode(directoryInfo.Name, Ord(ImageIndex.Dir), 0);
-                    
+
                     if (directoryInfo.Exists)
                     {
                         parentNode.Nodes.Add(treeNode);
@@ -158,68 +194,47 @@ namespace file_manage
 
 
         }
-        protected static readonly string SubDirectoryDummyTag = "Dummy";
-
-        private void MainForm_Load(object sender, EventArgs e)
+        private void treeViewDir_AfterExpand(object _sender, TreeViewEventArgs e)
         {
-
-            DriveInfo[] drives = DriveInfo.GetDrives();
-            foreach (var drive in drives)
-            {
-                switch (drive.DriveType)
-                {
-                    // 磁盘驱动器
-                    case DriveType.Fixed:
-                    case DriveType.Removable: 
-                        {
-                            var key = drive.Name;
-                            var name = key.TrimEnd('/', '\\');  // 去除 分隔符后缀
-                            var text = $"{drive.VolumeLabel} ({name})"; // 模仿 Windows Explorer 行为
-                                                                        //var text = key;
-                            TreeNode driveNode = treeViewDir.Nodes.Add(key, text, Ord(ImageIndex.Drive));
-                            driveNode.Tag = drive.RootDirectory.FullName; // 保存路径信息到节点的 Tag 属性
-                            driveNode.Nodes.Add(SubDirectoryDummyTag); // 添加一个虚拟子节点，表示有子文件夹
-                        }
-                        break;
-                    case DriveType.Network:
-                        {
-                            // TODO
-                        }
-                        break;
-                }
-            }
+            treeViewDirRender(e.Node);
         }
-
-
-        private void treeViewDir_AfterExpand(object sender, TreeViewEventArgs e)
+        private void treeViewDirRender(TreeNode node)
         {
-            
-            if (e.Node.Nodes.Count == 1 && e.Node.Nodes[0].Text == SubDirectoryDummyTag)
-            {
-                e.Node.Nodes.Clear(); // 移除虚拟子节点
 
-                var nodePath = e.Node.Tag.ToString();
+            if (node.Nodes.Count == 1 && node.Nodes[0].Text == SubDirectoryDummyTag)
+            {
+                node.Nodes.Clear(); // 移除虚拟子节点
+
+                // 初始化
+                var nodePath = GetFullPath(node);
 
                 var succ = TryGetDirectories(out string[] subDirectories, nodePath);
                 if (!succ) return;
                 foreach (var subDirectory in subDirectories)
                 {
-                    var subNode = newTreeNodeFromDir(subDirectory, e);
-                    subNode.Nodes.Add(SubDirectoryDummyTag); // 添加一个虚拟子节点，表示有子文件夹
+                    var subNode = newTreeNodeFromDir(subDirectory, node);
+                    subNode.Nodes.Add(SubDirectoryDummyTag); // 添加一个虚拟子节点，表示未初始化（未将entry存为nodes)
                 }
                 //ListDirsToNode(nodePath, ref e.Node.Nodes);
                 
             }
         }
 
-        private void listViewItem_DoubleClick(object sender, EventArgs e)
+        private void listViewItem_DoubleClick(object _sender, EventArgs e)
         {
             ListViewItem selectedListItem = listViewItem.SelectedItems[0];
+
             listViewItemRender(selectedListItem);
+            //var curTreeNode = treeViewDir.SelectedNode;
+            //curTreeNode.Nodes.Find()
+            //treeViewDirRender(newTreeNodeFromDir(selectedListItem.Tag.ToString(), curTreeNode));
+            //curTreeNode.Collapse();
+            //var dir = Path.Combine(GetFullPath(curTreeNode), selectedListItem.Text);
+            //PopulateTreeView(dir, curTreeNode);
         }
         protected void listViewItemRender(ListViewItem selectedListItem)
         {
-            var nodeName = selectedListItem.Tag.ToString(); // 获取选中节点Fullpath
+            var nodeName = GetFullPath(selectedListItem); // 获取选中节点Fullpath
             if (File.Exists(nodeName))  // is file
             {
                 Process.Start(nodeName);
@@ -238,10 +253,8 @@ namespace file_manage
                 foreach (string file in files)
                 {
                     int image_index = GetImageIndex(file);
-                    var item = new ListViewItem(Path.GetFileName(file), image_index)
-                    {
-                        Tag = file
-                    };
+                    var item = new ListViewItem(Path.GetFileName(file), image_index);
+                    SetFullPath(item, file);
 
                     //item.SubItems.Add("文件");
                     listViewItem.Items.Add(item);
