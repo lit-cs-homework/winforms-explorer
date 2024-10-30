@@ -78,6 +78,7 @@
             this.treeViewDir.SelectedImageIndex = 0;
             this.treeViewDir.Size = new System.Drawing.Size(316, 583);
             this.treeViewDir.TabIndex = 0;
+            this.treeViewDir.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.treeViewDir_AfterCollapse);
             this.treeViewDir.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.treeViewDir_AfterExpand);
             this.treeViewDir.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewDir_AfterSelect);
             // 

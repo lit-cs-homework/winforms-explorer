@@ -29,12 +29,12 @@ namespace file_manage
             InitializeComponent();
         }
         #region utils
-        public int Ord(ImageIndex index) => (int)index;
+        public static int Ord(ImageIndex index) => (int)index;
 
-        protected void Error(string msg) => MessageBox.Show(msg);
-        protected void Error(string msg, string title) => MessageBox.Show(msg, title);
+        protected static void Error(string msg) => MessageBox.Show(msg);
+        protected static void Error(string msg, string title) => MessageBox.Show(msg, title);
 
-        protected bool TryGetDirectories(out string[] res, string path)
+        protected static bool TryGetDirectories(out string[] res, string path)
         {
             string title = "错误";
             string msg;
@@ -76,7 +76,7 @@ namespace file_manage
             return false;
         }
 
-        protected ListViewItem newListViewItemFromDir(string directory)
+        protected static ListViewItem newListViewItemFromDir(string directory)
         {
             var name = new DirectoryInfo(directory).Name;
             var res = new ListViewItem(name, Ord(ImageIndex.Dir));
@@ -84,7 +84,7 @@ namespace file_manage
             SetFullPath(res, directory);
             return res;
         }
-        protected TreeNode newTreeNodeFromDir(string directory)
+        protected static TreeNode newTreeNodeFromDir(string directory)
         {
             var item = newListViewItemFromDir(directory);
             var subNode = new TreeNode(item.Text, item.ImageIndex, item.ImageIndex)
@@ -99,18 +99,18 @@ namespace file_manage
             return subNode;
         }
 
-        protected HashSet<string> archivesExt = new HashSet<string>
+        protected static HashSet<string> archivesExt = new HashSet<string>
             { ".zip", ".rar", ".7z", ".tar", ".xz"}
         ;
-        protected int GetImageIndex(string filepath) => 
+        protected static int GetImageIndex(string filepath) => 
             archivesExt.Contains(Path.GetExtension(filepath).ToLower()) ?
                 Ord(ImageIndex.Archive) :
                 Ord(ImageIndex.File)
             ;
-        protected string GetFullPath(TreeNode     node) => node.Tag.ToString();
-        protected string GetFullPath(ListViewItem node) => node.Tag.ToString();
-        protected void   SetFullPath(TreeNode     node, string fullPath) => node.Tag = fullPath;
-        protected void   SetFullPath(ListViewItem node, string fullPath) => node.Tag = fullPath;
+        protected static string GetFullPath(TreeNode     node) => node.Tag.ToString();
+        protected static string GetFullPath(ListViewItem node) => node.Tag.ToString();
+        protected static void   SetFullPath(TreeNode     node, string fullPath) => node.Tag = fullPath;
+        protected static void   SetFullPath(ListViewItem node, string fullPath) => node.Tag = fullPath;
         
         /// <summary>
         /// 虚拟子节点名称，表示parent未初始化（未将entry存为nodes),
