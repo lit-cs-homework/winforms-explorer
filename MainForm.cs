@@ -24,11 +24,12 @@ namespace file_manage
     }
     public partial class MainForm : Form
     {
-        public int Ord(ImageIndex index) => (int)index;
         public MainForm()
         {
             InitializeComponent();
         }
+        #region utils
+        public int Ord(ImageIndex index) => (int)index;
 
         protected void Error(string msg) => MessageBox.Show(msg);
         protected void Error(string msg, string title) => MessageBox.Show(msg, title);
@@ -116,7 +117,7 @@ namespace file_manage
         /// 因为Tag存的是abspath，所以不可能有其他项的 Tag 为 "Dummy"
         /// </summary>
         protected static readonly string SubDirectoryDummyTag = "Dummy";
-
+        #endregion // utils
         private void MainForm_Load(object sender, EventArgs e)
         {
 
@@ -147,30 +148,14 @@ namespace file_manage
             }
         }
 
-        private void treeViewDir_AfterSelect(object sender, TreeViewEventArgs e)
+        private void treeViewDirBindedRender(TreeNode node)
         {
-            string folderpath = GetFullPath(e.Node);
-            listViewItem.Items.Clear();
-
-            var succ = TryGetDirectories(out string[] subDirectories, folderpath);
-            if (!succ) return;
-            foreach (var subDirectory in subDirectories)
-            {
-                var item = newListViewItemFromDir(subDirectory);
-                listViewItem.Items.Add(item);
-            }
-            string[] files = Directory.GetFiles(folderpath);
-            foreach (string file in files)
-            {
-                var image_index = GetImageIndex(file);
-
-                var item = new ListViewItem(Path.GetFileName(file), image_index);
-                SetFullPath(item, file);
-
-                //item.SubItems.Add("文件");
-                listViewItem.Items.Add(item);
-            }
+            // bind
+            var fullPath = GetFullPath(node);
+            listViewItemRender(fullPath);
         }
+        private void treeViewDir_AfterSelect(object sender, TreeViewEventArgs e)
+            => treeViewDirBindedRender(e.Node);
 
 
         private void PopulateTreeView(string folderPath, TreeNode parentNode)
@@ -198,9 +183,8 @@ namespace file_manage
 
         }
         private void treeViewDir_AfterExpand(object _sender, TreeViewEventArgs e)
-        {
-            init_treeViewDir_if_needed(e.Node);
-        }
+            => init_treeViewDir_if_needed(e.Node);
+
         private void init_treeViewDir_if_needed(TreeNode node)
         {
 
@@ -223,12 +207,13 @@ namespace file_manage
                 
             }
         }
-
-        private void listViewItem_DoubleClick(object _sender, EventArgs e)
+        private void listViewItemBindedRender()
         {
             ListViewItem selectedListItem = listViewItem.SelectedItems[0];
 
-            listViewItemRender(selectedListItem);
+            listViewItemRender(GetFullPath(selectedListItem));
+
+            // 同步treeView
             var curTreeNode = treeViewDir.SelectedNode;
             //treeViewDirRender(newTreeNodeFromDir(selectedListItem.Tag.ToString(), curTreeNode));
             //curTreeNode.Collapse();
@@ -239,19 +224,22 @@ namespace file_manage
             curTreeNode.Expand();
             //PopulateTreeView(dir, curTreeNode);
         }
-        protected void listViewItemRender(ListViewItem selectedListItem)
+        private void listViewItem_DoubleClick(object _sender, EventArgs e)
+            => listViewItemBindedRender();
+
+        protected void listViewItemRender(string fullPath)
         {
-            var nodeName = GetFullPath(selectedListItem); // 获取选中节点Fullpath
-            if (File.Exists(nodeName))  // is file
+
+            if (File.Exists(fullPath))  // is file
             {
-                Process.Start(nodeName);
+                Process.Start(fullPath);
             }
-            else if (Directory.Exists(nodeName))
+            else if (Directory.Exists(fullPath))
             {
                 listViewItem.Clear();
-                var succ = TryGetDirectories(out string[] directories, nodeName);
+                var succ = TryGetDirectories(out string[] directories, fullPath);
                 if (!succ) return;
-                string[] files = Directory.GetFiles(nodeName);
+                string[] files = Directory.GetFiles(fullPath);
                 foreach (var directory in directories)
                 {
                     var item = newListViewItemFromDir(directory);
