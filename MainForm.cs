@@ -187,6 +187,14 @@ namespace file_manage
         private void treeViewDir_AfterExpand(object _sender, TreeViewEventArgs e)
             => init_treeViewDir_if_needed(e.Node);
 
+        private void treeViewDir_AfterCollapse(object _sender, TreeViewEventArgs e)
+        {
+            var node = e.Node.Parent;
+            if (node == null) return;
+            var path = GetFullPath(node);
+            listViewItemRender(path);
+
+        }
         private void init_treeViewDir_if_needed(TreeNode node)
         {
 
