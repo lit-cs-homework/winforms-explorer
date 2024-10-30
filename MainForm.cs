@@ -150,6 +150,8 @@ namespace file_manage
 
         private void treeViewDirBindedRender(TreeNode node)
         {
+            init_treeViewDir_if_needed(node);
+            node.ExpandToRoot();
             // bind
             var fullPath = GetFullPath(node);
             listViewItemRender(fullPath);
@@ -218,10 +220,12 @@ namespace file_manage
             //treeViewDirRender(newTreeNodeFromDir(selectedListItem.Tag.ToString(), curTreeNode));
             //curTreeNode.Collapse();
             var lastPart = selectedListItem.Text;
-            var dir = Path.Combine(GetFullPath(curTreeNode), lastPart);
+                
+            //var dir = Path.Combine(GetFullPath(curTreeNode), lastPart);
             init_treeViewDir_if_needed(curTreeNode);
-            curTreeNode = curTreeNode.Nodes.Find(lastPart, false)[0];
-            curTreeNode.Expand();
+            curTreeNode = curTreeNode.Nodes.Find(lastPart, true)[0];
+
+            curTreeNode.ExpandToRoot();
             //PopulateTreeView(dir, curTreeNode);
         }
         private void listViewItem_DoubleClick(object _sender, EventArgs e)
