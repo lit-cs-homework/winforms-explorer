@@ -35,7 +35,6 @@
             imageListDirView = new System.Windows.Forms.ImageList(components);
             listViewItem = new System.Windows.Forms.ListView();
             splitContainerMain = new System.Windows.Forms.SplitContainer();
-            groupBoxHeader = new System.Windows.Forms.GroupBox();
             flowLayoutPanelHeader = new System.Windows.Forms.FlowLayoutPanel();
             flowLayoutPanelBtns = new System.Windows.Forms.FlowLayoutPanel();
             btnRefresh = new System.Windows.Forms.Button();
@@ -51,7 +50,6 @@
             splitContainerMain.Panel1.SuspendLayout();
             splitContainerMain.Panel2.SuspendLayout();
             splitContainerMain.SuspendLayout();
-            groupBoxHeader.SuspendLayout();
             flowLayoutPanelHeader.SuspendLayout();
             flowLayoutPanelBtns.SuspendLayout();
             flowLayoutPanelInput.SuspendLayout();
@@ -71,7 +69,7 @@
             // splitContainerDirItem.Panel2
             // 
             splitContainerDirItem.Panel2.Controls.Add(listViewItem);
-            splitContainerDirItem.Size = new System.Drawing.Size(1365, 877);
+            splitContainerDirItem.Size = new System.Drawing.Size(1365, 931);
             splitContainerDirItem.SplitterDistance = 392;
             splitContainerDirItem.SplitterWidth = 5;
             splitContainerDirItem.TabIndex = 0;
@@ -85,7 +83,7 @@
             treeViewDir.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             treeViewDir.Name = "treeViewDir";
             treeViewDir.SelectedImageIndex = 0;
-            treeViewDir.Size = new System.Drawing.Size(392, 877);
+            treeViewDir.Size = new System.Drawing.Size(392, 931);
             treeViewDir.TabIndex = 0;
             treeViewDir.AfterCollapse += treeViewDir_AfterCollapse;
             treeViewDir.AfterExpand += treeViewDir_AfterExpand;
@@ -106,7 +104,7 @@
             listViewItem.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             listViewItem.MultiSelect = false;
             listViewItem.Name = "listViewItem";
-            listViewItem.Size = new System.Drawing.Size(968, 877);
+            listViewItem.Size = new System.Drawing.Size(968, 931);
             listViewItem.SmallImageList = imageListDirView;
             listViewItem.TabIndex = 0;
             listViewItem.UseCompatibleStateImageBehavior = false;
@@ -123,29 +121,15 @@
             // 
             // splitContainerMain.Panel1
             // 
-            splitContainerMain.Panel1.Controls.Add(groupBoxHeader);
+            splitContainerMain.Panel1.Controls.Add(flowLayoutPanelHeader);
             // 
             // splitContainerMain.Panel2
             // 
             splitContainerMain.Panel2.Controls.Add(splitContainerDirItem);
             splitContainerMain.Size = new System.Drawing.Size(1365, 1039);
-            splitContainerMain.SplitterDistance = 156;
+            splitContainerMain.SplitterDistance = 102;
             splitContainerMain.SplitterWidth = 6;
             splitContainerMain.TabIndex = 1;
-            // 
-            // groupBoxHeader
-            // 
-            groupBoxHeader.AutoSize = true;
-            groupBoxHeader.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            groupBoxHeader.Controls.Add(flowLayoutPanelHeader);
-            groupBoxHeader.Dock = System.Windows.Forms.DockStyle.Fill;
-            groupBoxHeader.Location = new System.Drawing.Point(0, 0);
-            groupBoxHeader.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            groupBoxHeader.Name = "groupBoxHeader";
-            groupBoxHeader.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            groupBoxHeader.Size = new System.Drawing.Size(1365, 156);
-            groupBoxHeader.TabIndex = 1;
-            groupBoxHeader.TabStop = false;
             // 
             // flowLayoutPanelHeader
             // 
@@ -153,10 +137,10 @@
             flowLayoutPanelHeader.Controls.Add(flowLayoutPanelBtns);
             flowLayoutPanelHeader.Controls.Add(flowLayoutPanelInput);
             flowLayoutPanelHeader.Dock = System.Windows.Forms.DockStyle.Fill;
-            flowLayoutPanelHeader.Location = new System.Drawing.Point(5, 44);
+            flowLayoutPanelHeader.Location = new System.Drawing.Point(0, 0);
             flowLayoutPanelHeader.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             flowLayoutPanelHeader.Name = "flowLayoutPanelHeader";
-            flowLayoutPanelHeader.Size = new System.Drawing.Size(1355, 106);
+            flowLayoutPanelHeader.Size = new System.Drawing.Size(1365, 102);
             flowLayoutPanelHeader.TabIndex = 5;
             // 
             // flowLayoutPanelBtns
@@ -223,7 +207,7 @@
             comboBoxLang.Location = new System.Drawing.Point(1048, 5);
             comboBoxLang.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             comboBoxLang.Name = "comboBoxLang";
-            comboBoxLang.Size = new System.Drawing.Size(83, 35);
+            comboBoxLang.Size = new System.Drawing.Size(64, 35);
             comboBoxLang.TabIndex = 3;
             comboBoxLang.SelectedIndexChanged += comboBoxLang_SelectedIndexChanged;
             // 
@@ -242,11 +226,9 @@
             ((System.ComponentModel.ISupportInitialize)splitContainerDirItem).EndInit();
             splitContainerDirItem.ResumeLayout(false);
             splitContainerMain.Panel1.ResumeLayout(false);
-            splitContainerMain.Panel1.PerformLayout();
             splitContainerMain.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainerMain).EndInit();
             splitContainerMain.ResumeLayout(false);
-            groupBoxHeader.ResumeLayout(false);
             flowLayoutPanelHeader.ResumeLayout(false);
             flowLayoutPanelBtns.ResumeLayout(false);
             flowLayoutPanelInput.ResumeLayout(false);
@@ -261,7 +243,6 @@
         public System.Windows.Forms.ImageList imageListDirView;
         public System.Windows.Forms.ListView listViewItem;
         private System.Windows.Forms.SplitContainer splitContainerMain;
-        private System.Windows.Forms.GroupBox groupBoxHeader;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelHeader;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelBtns;
         private System.Windows.Forms.Button btnRefresh;
