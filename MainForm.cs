@@ -202,7 +202,18 @@ namespace file_manage
 
 
         private void textBoxPath_MouseClick(object sender, MouseEventArgs e)
-            => Clipboard.SetText(textBoxPath.Text);
+        {
+            var txt = textBoxPath.Text;
+            if (txt == string.Empty)
+            {
+                MessageBox.Show("路径为空");
+                return;
+                // or error is thrown:
+                /*System.ArgumentNullException: 'Value cannot be null.
+                   Parameter name: text'*/
+            }
+            Clipboard.SetText(txt);
+        }
         #endregion textBoxPath
 
         #region NavBtn
