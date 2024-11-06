@@ -7,9 +7,31 @@ using System.Diagnostics;
 
 namespace file_manage
 {
-    using static file_manage.Utils;
+    using static Utils;
     public partial class MainForm : Form
     {
+        #region i18n
+        protected enum ZhEn { Zh, En }
+        protected I18N2<ZhEn> i18n;
+        protected ZhEn Lang {  get => i18n.Lang; set => i18n.Lang=value; }
+
+        /// <summary>
+        /// like `_` of gettext,
+        /// but only for 2 languages.
+        /// </summary>
+        /// <param name="zh">Chinese text</param>
+        /// <param name="en">English text</param>
+        /// <returns></returns>
+        protected string _2(string zh, string en) => i18n.T(zh, en);
+
+        protected void InitLocaleFromSystemConfig()
+        {
+            var culture = System.Globalization.CultureInfo.CurrentCulture;
+            var e = ZhEn.En;
+            if (culture.Name == "zh" || culture.Name == "zh-Hans") e = ZhEn.Zh;
+            i18n = new I18N2<ZhEn>(e);
+        }
+        #endregion i18n
 
         #region utils
         private void ListDrives() =>
@@ -25,9 +47,13 @@ namespace file_manage
         #region init
         public MainForm()
         {
+
+            InitLocaleFromSystemConfig();  // must be before InitToolTip
+
             InitializeComponent();
             InitToolTip();
             UpdateTextboxPathWidth();
+
         }
         protected void UpdateTextboxPathWidth() =>
             textBoxPath.Width = (int)(textBoxPath.Parent.Width * 0.85);
@@ -206,7 +232,7 @@ namespace file_manage
             var txt = textBoxPath.Text;
             if (txt == string.Empty)
             {
-                MessageBox.Show("路径为空");
+                MessageBox.Show(_2("路径为空", "nothing to copy"));
                 return;
                 // or error is thrown:
                 /*System.ArgumentNullException: 'Value cannot be null.
@@ -247,9 +273,9 @@ namespace file_manage
         protected void InitToolTip()
         {
             var toolTip = newToopTip(700);
-            toolTip.SetToolTip(btnRefresh, "刷新");
-            toolTip.SetToolTip(btnNavParentDir, "上一级目录");
-            newToopTip(100).SetToolTip(textBoxPath, "点击复制");
+            toolTip.SetToolTip(btnRefresh, _2("刷新", "Refresh"));
+            toolTip.SetToolTip(btnNavParentDir, _2("上一级目录", "Go to parent dir"));
+            newToopTip(100).SetToolTip(textBoxPath, _2("点击复制", "Click to copy to clipboard"));
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
