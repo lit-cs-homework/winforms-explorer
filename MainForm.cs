@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
@@ -20,6 +15,7 @@ namespace file_manage
             InitializeComponent();
             InitToolTip();
         }
+
         #region utils
         public enum ImageIndex
         {
@@ -138,7 +134,10 @@ namespace file_manage
                         break;
                     case DriveType.Network:
                         {
-                            // TODO
+                            /* TODO: either: ...
+                             * - inspect if GetDrives won't return Network (as I've seen, not sure
+                             * - rm this case-clause
+                             */
                         }
                         break;
                 }
@@ -278,6 +277,8 @@ namespace file_manage
                     if (!imageListDirView.Images.ContainsKey(suffix))
                     {
                         // If not, add the image to the image list.
+                        // TODO: support dark theme globally, ...
+                        //  so that the dark bg icon won't look unsuitable.
                         Icon iconForFile = System.Drawing.Icon.ExtractAssociatedIcon(file);
                         imageListDirView.Images.Add(suffix, iconForFile);
                     }
@@ -297,6 +298,7 @@ namespace file_manage
             textBoxPath.Text = fullPath;
 
         // unimpl yet
+        // TODO: rm ReadOnly attr of textBoxPath, and allow edit to navigate.
         private void textBoxPath_KeyDown(object sender, KeyEventArgs e)
         {
         /*
