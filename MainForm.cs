@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -76,17 +76,17 @@ namespace file_manage
             return false;
         }
 
-        protected static ListViewItem newListViewItemFromDir(string directory)
+        protected static ListViewItem newListViewItemFromDir(string directory, ImageIndex imIdx=ImageIndex.Dir)
         {
             var name = new DirectoryInfo(directory).Name;
-            var res = new ListViewItem(name, Ord(ImageIndex.Dir));
+            var res = new ListViewItem(name, Ord(imIdx));
             res.Name = name;
             SetFullPath(res, directory);
             return res;
         }
-        protected static TreeNode newTreeNodeFromDir(string directory)
+        protected static TreeNode newTreeNodeFromDir(string directory, ImageIndex imIdx=ImageIndex.Dir)
         {
-            var item = newListViewItemFromDir(directory);
+            var item = newListViewItemFromDir(directory, imIdx);
             var subNode = new TreeNode(item.Text, item.ImageIndex, item.ImageIndex)
             {
                 Name = item.Name
@@ -98,7 +98,15 @@ namespace file_manage
             subNode.Nodes.Add(SubDirectoryDummyTag); // 添加一个虚拟子节点，表示未初始化（未将entry存为nodes) (与已检查的空文件夹区分)
             return subNode;
         }
-
+        protected static TreeNode newTreeNodeFromDrive(DriveInfo drive)
+        {
+            var res = newTreeNodeFromDir(drive.Name, ImageIndex.Drive);
+            var name = drive.Name.TrimEnd('\\', '/');  // 去除 分隔符后缀
+            var text = $"{drive.VolumeLabel} ({name})"; // 模仿 Windows Explorer 行为
+                                                        //var text = key;
+            res.Text = text;
+            return res;
+        }
         protected static HashSet<string> archivesExt = new HashSet<string>
             { ".zip", ".rar", ".7z", ".tar", ".xz"}
         ;
@@ -130,13 +138,10 @@ namespace file_manage
                     case DriveType.Fixed:
                     case DriveType.Removable:
                         {
-                            var key = drive.Name;
-                            var name = key.TrimEnd('/', '\\');  // 去除 分隔符后缀
-                            var text = $"{drive.VolumeLabel} ({name})"; // 模仿 Windows Explorer 行为
-                                                                        //var text = key;
-                            TreeNode driveNode = treeViewDir.Nodes.Add(key, text, Ord(ImageIndex.Drive));
-                            SetFullPath(driveNode, drive.RootDirectory.FullName); // 保存路径信息到节点的 Tag 属性
-                            driveNode.Nodes.Add(SubDirectoryDummyTag); // 添加一个虚拟子节点，表示有子文件夹
+                            var driveNode = newTreeNodeFromDrive(drive);
+                            //SetFullPath(driveNode, drive.RootDirectory.FullName); // 保存路径信息到节点的 Tag 属性
+                            //driveNode.Nodes.Add(SubDirectoryDummyTag); // 添加一个虚拟子节点，表示有子文件夹
+                            treeViewDir.Nodes.Add(driveNode);
                         }
                         break;
                     case DriveType.Network:
