@@ -33,14 +33,12 @@ namespace file_manage
                     case DriveType.Removable:
                         {
                             var driveNode = newTreeNodeFromDrive(drive);
-                            //SetFullPath(driveNode, drive.RootDirectory.FullName); // 保存路径信息到节点的 Tag 属性
-                            //driveNode.Nodes.Add(SubDirectoryDummyTag); // 添加一个虚拟子节点，表示有子文件夹
                             treeViewDir.Nodes.Add(driveNode);
                         }
                         break;
                     case DriveType.Network:
                         {
-                            /* TODO: either: ...
+                            /* TODO: will GetDrives yield Network drive? To either: ...
                              * - inspect if GetDrives won't return Network (as I've seen, not sure
                              * - rm this case-clause
                              */
@@ -50,6 +48,7 @@ namespace file_manage
             }
         }
 
+        // a few hard-coded default icon for non-file directory entry
         public enum ImageIndex
         {
             Drive, Dir,
@@ -116,8 +115,6 @@ namespace file_manage
             {
                 Name = item.Name
             };
-            //TreeNode subNode = e.Node.Nodes.Add(directoryInfo.Name, directoryInfo.Name, Ord(ImageIndex.Dir);
-            //subNode.Tag = directoryInfo.FullName; // 保存路径信息到节点的 Tag 属性
 
             SetFullPath(subNode, GetFullPath(item));
             subNode.Nodes.Add(SubDirectoryDummyTag); // 添加一个虚拟子节点，表示未初始化（未将entry存为nodes) (与已检查的空文件夹区分)
@@ -128,7 +125,6 @@ namespace file_manage
             var res = newTreeNodeFromDir(drive.Name, ImageIndex.Drive);
             var name = drive.Name.TrimEnd('\\', '/');  // 去除 分隔符后缀
             var text = $"{drive.VolumeLabel} ({name})"; // 模仿 Windows Explorer 行为
-                                                        //var text = key;
             res.Text = text;
             return res;
         }
@@ -145,7 +141,7 @@ namespace file_manage
         #endregion utils
 
         private void MainForm_Load(object sender, EventArgs e) => ListDrives();
-
+ 
 
         #region treeView
         private void treeViewDirBindedRender(TreeNode node)
@@ -171,7 +167,6 @@ namespace file_manage
             else
             {
                 // 处理当前文件夹              
-                // 递归遍历子文件夹
                 foreach (var subFolder in subFolders)
                 {
                     var treeNode = newTreeNodeFromDir(subFolder);
@@ -231,11 +226,8 @@ namespace file_manage
 
             // 同步treeView
             var curTreeNode = treeViewDir.SelectedNode;
-            //treeViewDirRender(newTreeNodeFromDir(selectedListItem.Tag.ToString(), curTreeNode));
-            //curTreeNode.Collapse();
             var lastPart = selectedListItem.Text;
                 
-            //var dir = Path.Combine(GetFullPath(curTreeNode), lastPart);
             init_treeViewDir_if_needed(curTreeNode);
             var ls = curTreeNode.Nodes.Find(lastPart, true);
             if (ls.Count() == 0) return;
@@ -243,7 +235,6 @@ namespace file_manage
 
             curTreeNode.ExpandToRoot();
             UpdatePathInput(fullPath);
-            //PopulateTreeView(dir, curTreeNode);
         }
         private void listViewItem_DoubleClick(object _sender, EventArgs e)
             => listViewItemBindedRender();
@@ -268,7 +259,6 @@ namespace file_manage
                 string[] files = Directory.GetFiles(fullPath);
                 foreach (string file in files)
                 {
-                    //int image_index = GetImageIndex(file);
 
                     var item = new ListViewItem(Path.GetFileName(file));
 
@@ -289,7 +279,6 @@ namespace file_manage
 
                     SetFullPath(item, file);
 
-                    //item.SubItems.Add("文件");
                     listViewItem.Items.Add(item);
                 }
             }
