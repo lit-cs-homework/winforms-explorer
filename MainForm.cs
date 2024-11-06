@@ -4,10 +4,13 @@ using System.Linq;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
+using System.Runtime.Versioning;
 
 namespace file_manage
 {
     using static Utils;
+
+    [SupportedOSPlatform("windows")]
     public partial class MainForm : Form
     {
         #region i18n
