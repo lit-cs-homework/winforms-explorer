@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,10 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-using System.Collections.Specialized;
 using System.Diagnostics;
-
-
 
 namespace file_manage
 {
@@ -24,9 +21,11 @@ namespace file_manage
     }
     public partial class MainForm : Form
     {
+
         public MainForm()
         {
             InitializeComponent();
+            InitRefreshBtnToolTip();
         }
         #region utils
         public static int Ord(ImageIndex index) => (int)index;
@@ -126,6 +125,10 @@ namespace file_manage
         /// </summary>
         protected static readonly string SubDirectoryDummyTag = "Dummy";
         #endregion // utils
+
+        /// <summary>
+        /// list drives
+        /// </summary>
         private void MainForm_Load(object sender, EventArgs e)
         {
 
@@ -153,6 +156,7 @@ namespace file_manage
             }
         }
 
+        #region treeView
         private void treeViewDirBindedRender(TreeNode node)
         {
             init_treeViewDir_if_needed(node);
@@ -222,6 +226,9 @@ namespace file_manage
                 
             }
         }
+        #endregion  // treeView
+
+        #region listView
         private void listViewItemBindedRender()
         {
             ListViewItem selectedListItem = listViewItem.SelectedItems[0];
@@ -275,14 +282,38 @@ namespace file_manage
                 }
             }
         }
+        #endregion // listView
 
         private void textBoxPath_KeyDown(object sender, KeyEventArgs e)
         {
-            //if (e.KeyCode == Keys.Enter)
-            //{
-            //    MessageBox.Show("asd");
-            //    e.Handled = true;
-            //}
+            if (e.KeyCode == Keys.Enter)
+            {
+                MessageBox.Show("asd");
+                e.Handled = true;
+            }
         }
+
+        #region refreshBtn
+        protected void InitRefreshBtnToolTip()
+        {
+            var refreshTip = new ToolTip()
+            {
+                AutoPopDelay = 5000,
+                InitialDelay = 700,
+                ReshowDelay = 500,
+                ShowAlways = true,
+            };
+            refreshTip.SetToolTip(btnRefresh, "刷新");
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            var curTreeNode = treeViewDir.SelectedNode;
+            curTreeNode.Nodes.Clear();
+            curTreeNode.Nodes.Add(SubDirectoryDummyTag);
+            treeViewDirBindedRender(curTreeNode);
+
+        }
+        #endregion // refreshBtn
     }
 }
