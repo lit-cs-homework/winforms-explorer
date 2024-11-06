@@ -43,11 +43,11 @@ namespace file_manage
         #region treeView
         private void treeViewDirBindedRender(TreeNode node)
         {
-            init_treeViewDir_if_needed(node);
+            treeViewDirRender(node);
             node.ExpandToRoot();
             // bind
             var fullPath = GetFullPath(node);
-            listViewItemRender_Uncached(fullPath);
+            listViewItemRender(fullPath);
             UpdatePathInput(fullPath);
         }
         private void treeViewDirBindedRender() => treeViewDirBindedRender(treeViewDir.SelectedNode);
@@ -79,17 +79,17 @@ namespace file_manage
 
         }
         private void treeViewDir_AfterExpand(object _sender, TreeViewEventArgs e)
-            => init_treeViewDir_if_needed(e.Node);
+            => treeViewDirRender(e.Node);
 
         private void treeViewDir_AfterCollapse(object _sender, TreeViewEventArgs e)
         {
             var node = e.Node.Parent;
             if (node == null) return;
             var path = GetFullPath(node);
-            listViewItemRender_Uncached(path);
+            listViewItemRender(path);
 
         }
-        private void init_treeViewDir_if_needed(TreeNode node)
+        private void treeViewDirRender(TreeNode node)
         {
 
             if (node.Nodes.Count == 1 && node.Nodes[0].Text == SubDirectoryDummyTag)
@@ -119,13 +119,13 @@ namespace file_manage
             ListViewItem selectedListItem = listViewItem.SelectedItems[0];
             var fullPath = GetFullPath(selectedListItem);
 
-            listViewItemRender_Uncached(fullPath);
+            listViewItemRender(fullPath);
 
             // 同步treeView
             var curTreeNode = treeViewDir.SelectedNode;
             var lastPart = selectedListItem.Text;
                 
-            init_treeViewDir_if_needed(curTreeNode);
+            treeViewDirRender(curTreeNode);
             var ls = curTreeNode.Nodes.Find(lastPart, true);
             if (ls.Count() == 0) return;
             curTreeNode = ls[0];
@@ -136,7 +136,7 @@ namespace file_manage
         private void listViewItem_DoubleClick(object _sender, EventArgs e)
             => listViewItemBindedRender();
 
-        protected void listViewItemRender_Uncached(string fullPath)
+        protected void listViewItemRender(string fullPath)
         {
 
             if (File.Exists(fullPath))  // is file
@@ -253,5 +253,5 @@ namespace file_manage
         }
         #endregion ToopTip
 
-        }
     }
+}
