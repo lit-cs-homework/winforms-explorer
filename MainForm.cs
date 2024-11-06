@@ -16,8 +16,6 @@ namespace file_manage
     {
         Drive,
         Dir,
-        Archive,
-        File,
     }
     public partial class MainForm : Form
     {
@@ -106,14 +104,6 @@ namespace file_manage
             res.Text = text;
             return res;
         }
-        protected static HashSet<string> archivesExt = new HashSet<string>
-            { ".zip", ".rar", ".7z", ".tar", ".xz"}
-        ;
-        protected static int GetImageIndex(string filepath) => 
-            archivesExt.Contains(Path.GetExtension(filepath).ToLower()) ?
-                Ord(ImageIndex.Archive) :
-                Ord(ImageIndex.File)
-            ;
         protected static string GetFullPath(TreeNode     node) => node.Tag.ToString();
         protected static string GetFullPath(ListViewItem node) => node.Tag.ToString();
         protected static void   SetFullPath(TreeNode     node, string fullPath) => node.Tag = fullPath;

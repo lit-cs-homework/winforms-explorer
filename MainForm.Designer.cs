@@ -53,7 +53,7 @@
             // 
             this.splitContainerDirItem.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainerDirItem.Location = new System.Drawing.Point(0, 0);
-            this.splitContainerDirItem.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.splitContainerDirItem.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainerDirItem.Name = "splitContainerDirItem";
             // 
             // splitContainerDirItem.Panel1
@@ -70,10 +70,10 @@
             // treeViewDir
             // 
             this.treeViewDir.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeViewDir.ImageIndex = 2;
+            this.treeViewDir.ImageIndex = 1;
             this.treeViewDir.ImageList = this.imageListDirView;
             this.treeViewDir.Location = new System.Drawing.Point(0, 0);
-            this.treeViewDir.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.treeViewDir.Margin = new System.Windows.Forms.Padding(4);
             this.treeViewDir.Name = "treeViewDir";
             this.treeViewDir.SelectedImageIndex = 0;
             this.treeViewDir.Size = new System.Drawing.Size(314, 584);
@@ -88,15 +88,13 @@
             this.imageListDirView.TransparentColor = System.Drawing.Color.Transparent;
             this.imageListDirView.Images.SetKeyName(0, "disk.png");
             this.imageListDirView.Images.SetKeyName(1, "imageres 004.png");
-            this.imageListDirView.Images.SetKeyName(2, "imageres 006.png");
-            this.imageListDirView.Images.SetKeyName(3, "txt-ico.jpg");
             // 
             // listViewItem
             // 
             this.listViewItem.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewItem.HideSelection = false;
             this.listViewItem.Location = new System.Drawing.Point(0, 0);
-            this.listViewItem.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.listViewItem.Margin = new System.Windows.Forms.Padding(4);
             this.listViewItem.MultiSelect = false;
             this.listViewItem.Name = "listViewItem";
             this.listViewItem.Size = new System.Drawing.Size(774, 584);
@@ -110,7 +108,7 @@
             // 
             this.splitContainerMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainerMain.Location = new System.Drawing.Point(0, 0);
-            this.splitContainerMain.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.splitContainerMain.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainerMain.Name = "splitContainerMain";
             this.splitContainerMain.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -131,9 +129,9 @@
             this.groupBoxHeader.Controls.Add(this.textBoxPath);
             this.groupBoxHeader.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBoxHeader.Location = new System.Drawing.Point(0, 0);
-            this.groupBoxHeader.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxHeader.Margin = new System.Windows.Forms.Padding(4);
             this.groupBoxHeader.Name = "groupBoxHeader";
-            this.groupBoxHeader.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBoxHeader.Padding = new System.Windows.Forms.Padding(4);
             this.groupBoxHeader.Size = new System.Drawing.Size(1092, 68);
             this.groupBoxHeader.TabIndex = 1;
             this.groupBoxHeader.TabStop = false;
@@ -142,7 +140,7 @@
             // 
             this.btnRefresh.Font = new System.Drawing.Font("SimSun", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnRefresh.Location = new System.Drawing.Point(74, 0);
-            this.btnRefresh.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnRefresh.Margin = new System.Windows.Forms.Padding(6);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(40, 58);
             this.btnRefresh.TabIndex = 1;
@@ -154,7 +152,7 @@
             // 
             this.textBoxPath.Cursor = System.Windows.Forms.Cursors.Help;
             this.textBoxPath.Location = new System.Drawing.Point(124, 4);
-            this.textBoxPath.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxPath.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxPath.Name = "textBoxPath";
             this.textBoxPath.ReadOnly = true;
             this.textBoxPath.Size = new System.Drawing.Size(890, 35);
@@ -168,7 +166,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1092, 656);
             this.Controls.Add(this.splitContainerMain);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
             this.Text = "FileMgr";
             this.Load += new System.EventHandler(this.MainForm_Load);
