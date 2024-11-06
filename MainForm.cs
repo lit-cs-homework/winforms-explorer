@@ -269,16 +269,29 @@ namespace file_manage
                 listViewItem.Clear();
                 var succ = TryGetDirectories(out string[] directories, fullPath);
                 if (!succ) return;
-                string[] files = Directory.GetFiles(fullPath);
                 foreach (var directory in directories)
                 {
                     var item = newListViewItemFromDir(directory);
                     listViewItem.Items.Add(item);
                 }
+                string[] files = Directory.GetFiles(fullPath);
                 foreach (string file in files)
                 {
-                    int image_index = GetImageIndex(file);
-                    var item = new ListViewItem(Path.GetFileName(file), image_index);
+                    //int image_index = GetImageIndex(file);
+
+                    var item = new ListViewItem(Path.GetFileName(file));
+
+                    // Check to see if the image collection contains an image
+                    // for this extension, using the extension as a key.
+                    var suffix = Path.GetExtension(file);
+                    if (!imageListDirView.Images.ContainsKey(suffix))
+                    {
+                        // If not, add the image to the image list.
+                        Icon iconForFile = System.Drawing.Icon.ExtractAssociatedIcon(file);
+                        imageListDirView.Images.Add(suffix, iconForFile);
+                    }
+                    item.ImageKey = suffix;
+
                     SetFullPath(item, file);
 
                     //item.SubItems.Add("文件");
