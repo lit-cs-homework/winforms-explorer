@@ -182,6 +182,7 @@
             this.Name = "MainForm";
             this.Text = "FileMgr";
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.splitContainerDirItem.Panel1.ResumeLayout(false);
             this.splitContainerDirItem.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerDirItem)).EndInit();

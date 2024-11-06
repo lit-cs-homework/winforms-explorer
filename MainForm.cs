@@ -21,13 +21,24 @@ namespace file_manage
             );
 
         #endregion utils
+
+        #region init
         public MainForm()
         {
             InitializeComponent();
             InitToolTip();
+            UpdateTextboxPathWidth();
         }
+        protected void UpdateTextboxPathWidth() =>
+            textBoxPath.Width = (int)(textBoxPath.Parent.Width * 0.85);
+
         private void MainForm_Load(object sender, EventArgs e) => ListDrives();
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            UpdateTextboxPathWidth();
  
+        }
+        #endregion init
 
         #region treeView
         private void treeViewDirBindedRender(TreeNode node)
@@ -242,5 +253,5 @@ namespace file_manage
         }
         #endregion ToopTip
 
+        }
     }
-}
