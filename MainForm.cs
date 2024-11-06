@@ -106,13 +106,13 @@ namespace winforms_explorer
 
         private void PopulateTreeView(string folderPath, TreeNode parentNode)
         {
-            // 获取当前文件夹的所有子文件夹
+            // Get all subdirectories
             var succ = TryGetDirectories(out string[] subFolders, folderPath);
             if (!succ) return;
             if (subFolders == null || subFolders.Length == 0) return;
             else
             {
-                // 处理当前文件夹              
+                // handle subdirecties
                 foreach (var subFolder in subFolders)
                 {
                     var treeNode = newTreeNodeFromDir(subFolder);
@@ -143,9 +143,9 @@ namespace winforms_explorer
 
             if (node.Nodes.Count == 1 && node.Nodes[0].Text == SubDirectoryDummyTag)
             {
-                node.Nodes.Clear(); // 移除虚拟子节点
+                node.Nodes.Clear(); // rm dummy node
 
-                // 初始化
+                // init
                 var nodePath = GetFullPath(node);
 
                 var succ = TryGetDirectories(out string[] subDirectories, nodePath);
@@ -156,7 +156,6 @@ namespace winforms_explorer
                     node.Nodes.Add(subNode);
                     
                 }
-                //ListDirsToNode(nodePath, ref e.Node.Nodes);
                 
             }
         }
@@ -170,13 +169,13 @@ namespace winforms_explorer
 
             listViewItemRender(fullPath);
 
-            // 同步treeView
+            // sync treeView
             var curTreeNode = treeViewDir.SelectedNode;
             var lastPart = selectedListItem.Text;
                 
             treeViewDirRender(curTreeNode);
             var ls = curTreeNode.Nodes.Find(lastPart, true);
-            if (ls.Count() == 0) return;
+            if (ls.Length == 0) return;
             curTreeNode = ls[0];
 
             curTreeNode.ExpandToRoot();

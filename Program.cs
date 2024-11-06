@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.Versioning;
 
 namespace winforms_explorer
 {
+
+    [SupportedOSPlatform("windows")]
     internal static class Program
     {
         /// <summary>

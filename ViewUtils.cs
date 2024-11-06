@@ -1,9 +1,11 @@
 ﻿
+using System.Runtime.Versioning;
 using System.Windows.Forms;
 
 namespace winforms_explorer
 {
 
+    [SupportedOSPlatform("windows")]
     public static class ViewUtils
     {
         /// <summary>
