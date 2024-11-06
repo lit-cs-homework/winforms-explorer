@@ -163,8 +163,10 @@ namespace file_manage
             node.ExpandToRoot();
             // bind
             var fullPath = GetFullPath(node);
-            listViewItemRender(fullPath);
+            listViewItemRender_Uncached(fullPath);
+            UpdatePathInput(fullPath);
         }
+        private void treeViewDirBindedRender() => treeViewDirBindedRender(treeViewDir.SelectedNode);
         private void treeViewDir_AfterSelect(object sender, TreeViewEventArgs e)
             => treeViewDirBindedRender(e.Node);
 
@@ -201,7 +203,7 @@ namespace file_manage
             var node = e.Node.Parent;
             if (node == null) return;
             var path = GetFullPath(node);
-            listViewItemRender(path);
+            listViewItemRender_Uncached(path);
 
         }
         private void init_treeViewDir_if_needed(TreeNode node)
@@ -232,8 +234,9 @@ namespace file_manage
         private void listViewItemBindedRender()
         {
             ListViewItem selectedListItem = listViewItem.SelectedItems[0];
+            var fullPath = GetFullPath(selectedListItem);
 
-            listViewItemRender(GetFullPath(selectedListItem));
+            listViewItemRender_Uncached(fullPath);
 
             // 同步treeView
             var curTreeNode = treeViewDir.SelectedNode;
@@ -248,12 +251,13 @@ namespace file_manage
             curTreeNode = ls[0];
 
             curTreeNode.ExpandToRoot();
+            UpdatePathInput(fullPath);
             //PopulateTreeView(dir, curTreeNode);
         }
         private void listViewItem_DoubleClick(object _sender, EventArgs e)
             => listViewItemBindedRender();
 
-        protected void listViewItemRender(string fullPath)
+        protected void listViewItemRender_Uncached(string fullPath)
         {
 
             if (File.Exists(fullPath))  // is file
@@ -284,13 +288,19 @@ namespace file_manage
         }
         #endregion // listView
 
+        protected void UpdatePathInput(string fullPath) =>
+            textBoxPath.Text = fullPath;
+
+        // unimpl yet
         private void textBoxPath_KeyDown(object sender, KeyEventArgs e)
         {
+        /*
             if (e.KeyCode == Keys.Enter)
             {
-                MessageBox.Show("asd");
+                RecurviseUpdateView();
                 e.Handled = true;
             }
+        */
         }
 
         #region refreshBtn
