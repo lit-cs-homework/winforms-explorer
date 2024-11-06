@@ -38,6 +38,7 @@
             this.groupBoxHeader = new System.Windows.Forms.GroupBox();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.textBoxPath = new System.Windows.Forms.TextBox();
+            this.btnNavParentDir = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerDirItem)).BeginInit();
             this.splitContainerDirItem.Panel1.SuspendLayout();
             this.splitContainerDirItem.Panel2.SuspendLayout();
@@ -125,6 +126,7 @@
             // 
             // groupBoxHeader
             // 
+            this.groupBoxHeader.Controls.Add(this.btnNavParentDir);
             this.groupBoxHeader.Controls.Add(this.btnRefresh);
             this.groupBoxHeader.Controls.Add(this.textBoxPath);
             this.groupBoxHeader.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -139,7 +141,7 @@
             // btnRefresh
             // 
             this.btnRefresh.Font = new System.Drawing.Font("SimSun", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnRefresh.Location = new System.Drawing.Point(74, 0);
+            this.btnRefresh.Location = new System.Drawing.Point(27, 3);
             this.btnRefresh.Margin = new System.Windows.Forms.Padding(6);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(40, 58);
@@ -159,6 +161,16 @@
             this.textBoxPath.TabIndex = 0;
             this.textBoxPath.MouseClick += new System.Windows.Forms.MouseEventHandler(this.textBoxPath_MouseClick);
             this.textBoxPath.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxPath_KeyDown);
+            // 
+            // btnNavParentDir
+            // 
+            this.btnNavParentDir.Location = new System.Drawing.Point(76, 3);
+            this.btnNavParentDir.Name = "btnNavParentDir";
+            this.btnNavParentDir.Size = new System.Drawing.Size(37, 57);
+            this.btnNavParentDir.TabIndex = 2;
+            this.btnNavParentDir.Text = "<";
+            this.btnNavParentDir.UseVisualStyleBackColor = true;
+            this.btnNavParentDir.Click += new System.EventHandler(this.btnNavParentDir_Click);
             // 
             // MainForm
             // 
@@ -194,6 +206,7 @@
         private System.Windows.Forms.GroupBox groupBoxHeader;
         private System.Windows.Forms.TextBox textBoxPath;
         private System.Windows.Forms.Button btnRefresh;
+        private System.Windows.Forms.Button btnNavParentDir;
     }
 }
 

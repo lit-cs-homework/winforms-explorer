@@ -12,11 +12,6 @@ using System.Diagnostics;
 
 namespace file_manage
 {
-    public enum ImageIndex
-    {
-        Drive,
-        Dir,
-    }
     public partial class MainForm : Form
     {
 
@@ -26,6 +21,10 @@ namespace file_manage
             InitToolTip();
         }
         #region utils
+        public enum ImageIndex
+        {
+            Drive, Dir,
+        }
         public static int Ord(ImageIndex index) => (int)index;
 
         protected static void Error(string msg) => MessageBox.Show(msg);
@@ -315,7 +314,24 @@ namespace file_manage
             => Clipboard.SetText(textBoxPath.Text);
         #endregion textBoxPath
 
-        #region refreshBtn
+        #region NavBtn
+
+        /// <summary>
+        /// navigate to parent directory, if any.
+        /// </summary>
+        private void btnNavParentDir_Click(object sender, EventArgs e)
+        {
+            var curTreeNode = treeViewDir.SelectedNode;
+            if (curTreeNode == null) return;
+            curTreeNode.Collapse();
+            curTreeNode = curTreeNode.Parent;
+            if (curTreeNode == null) return;
+            treeViewDir.SelectedNode = curTreeNode;
+            treeViewDirBindedRender(curTreeNode);
+        }
+        #endregion NavBtn
+
+        #region ToopTip
 
         private ToolTip newToopTip(int delay) =>
             new ToolTip()
@@ -328,7 +344,9 @@ namespace file_manage
 
         protected void InitToolTip()
         {
-            newToopTip(700).SetToolTip(btnRefresh, "刷新");
+            var toolTip = newToopTip(700);
+            toolTip.SetToolTip(btnRefresh, "刷新");
+            toolTip.SetToolTip(btnNavParentDir, "上一级目录");
             newToopTip(100).SetToolTip(textBoxPath, "点击复制");
         }
 
@@ -340,6 +358,7 @@ namespace file_manage
             treeViewDirBindedRender(curTreeNode);
 
         }
-        #endregion refreshBtn
+        #endregion ToopTip
+
     }
 }
