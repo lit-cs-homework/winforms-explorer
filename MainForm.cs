@@ -114,7 +114,7 @@ namespace file_manage
         /// 因为Tag存的是abspath，所以不可能有其他项的 Tag 为 "Dummy"
         /// </summary>
         protected static readonly string SubDirectoryDummyTag = "Dummy";
-        #endregion // utils
+        #endregion utils
 
         /// <summary>
         /// list drives
@@ -218,7 +218,7 @@ namespace file_manage
                 
             }
         }
-        #endregion  // treeView
+        #endregion treeView
 
         #region listView
         private void listViewItemBindedRender()
@@ -274,6 +274,8 @@ namespace file_manage
                     // Check to see if the image collection contains an image
                     // for this extension, using the extension as a key.
                     var suffix = Path.GetExtension(file);
+                    // ref
+                    // https://learn.microsoft.com/en-us/dotnet/desktop/winforms/advanced/how-to-extract-the-icon-associated-with-a-file-in-windows-forms?view=netframeworkdesktop-4.8
                     if (!imageListDirView.Images.ContainsKey(suffix))
                     {
                         // If not, add the image to the image list.
@@ -289,8 +291,9 @@ namespace file_manage
                 }
             }
         }
-        #endregion // listView
+        #endregion listView
 
+        #region textBoxPath
         protected void UpdatePathInput(string fullPath) =>
             textBoxPath.Text = fullPath;
 
@@ -310,7 +313,7 @@ namespace file_manage
 
         private void textBoxPath_MouseClick(object sender, MouseEventArgs e)
             => Clipboard.SetText(textBoxPath.Text);
-
+        #endregion textBoxPath
 
         #region refreshBtn
 
@@ -337,6 +340,6 @@ namespace file_manage
             treeViewDirBindedRender(curTreeNode);
 
         }
-        #endregion // refreshBtn
+        #endregion refreshBtn
     }
 }
