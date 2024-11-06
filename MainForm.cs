@@ -25,7 +25,7 @@ namespace file_manage
         public MainForm()
         {
             InitializeComponent();
-            InitRefreshBtnToolTip();
+            InitToolTip();
         }
         #region utils
         public static int Ord(ImageIndex index) => (int)index;
@@ -303,17 +303,27 @@ namespace file_manage
         */
         }
 
+
+
+        private void textBoxPath_MouseClick(object sender, MouseEventArgs e)
+            => Clipboard.SetText(textBoxPath.Text);
+
+
         #region refreshBtn
-        protected void InitRefreshBtnToolTip()
-        {
-            var refreshTip = new ToolTip()
+
+        private ToolTip newToopTip(int delay) =>
+            new ToolTip()
             {
                 AutoPopDelay = 5000,
-                InitialDelay = 700,
+                InitialDelay = delay,
                 ReshowDelay = 500,
                 ShowAlways = true,
             };
-            refreshTip.SetToolTip(btnRefresh, "刷新");
+
+        protected void InitToolTip()
+        {
+            newToopTip(700).SetToolTip(btnRefresh, "刷新");
+            newToopTip(100).SetToolTip(textBoxPath, "点击复制");
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
