@@ -236,7 +236,9 @@ namespace file_manage
                 
             //var dir = Path.Combine(GetFullPath(curTreeNode), lastPart);
             init_treeViewDir_if_needed(curTreeNode);
-            curTreeNode = curTreeNode.Nodes.Find(lastPart, true)[0];
+            var ls = curTreeNode.Nodes.Find(lastPart, true);
+            if (ls.Count() == 0) return;
+            curTreeNode = ls[0];
 
             curTreeNode.ExpandToRoot();
             //PopulateTreeView(dir, curTreeNode);
