@@ -17,6 +17,39 @@ namespace file_manage
         }
 
         #region utils
+
+        /// <summary>
+        /// list drives
+        /// </summary>
+        protected void ListDrives()
+        {
+            DriveInfo[] drives = DriveInfo.GetDrives();
+            foreach (var drive in drives)
+            {
+                switch (drive.DriveType)
+                {
+                    // 磁盘驱动器
+                    case DriveType.Fixed:
+                    case DriveType.Removable:
+                        {
+                            var driveNode = newTreeNodeFromDrive(drive);
+                            //SetFullPath(driveNode, drive.RootDirectory.FullName); // 保存路径信息到节点的 Tag 属性
+                            //driveNode.Nodes.Add(SubDirectoryDummyTag); // 添加一个虚拟子节点，表示有子文件夹
+                            treeViewDir.Nodes.Add(driveNode);
+                        }
+                        break;
+                    case DriveType.Network:
+                        {
+                            /* TODO: either: ...
+                             * - inspect if GetDrives won't return Network (as I've seen, not sure
+                             * - rm this case-clause
+                             */
+                        }
+                        break;
+                }
+            }
+        }
+
         public enum ImageIndex
         {
             Drive, Dir,
@@ -111,38 +144,8 @@ namespace file_manage
         protected static readonly string SubDirectoryDummyTag = "Dummy";
         #endregion utils
 
-        /// <summary>
-        /// list drives
-        /// </summary>
-        private void MainForm_Load(object sender, EventArgs e)
-        {
+        private void MainForm_Load(object sender, EventArgs e) => ListDrives();
 
-            DriveInfo[] drives = DriveInfo.GetDrives();
-            foreach (var drive in drives)
-            {
-                switch (drive.DriveType)
-                {
-                    // 磁盘驱动器
-                    case DriveType.Fixed:
-                    case DriveType.Removable:
-                        {
-                            var driveNode = newTreeNodeFromDrive(drive);
-                            //SetFullPath(driveNode, drive.RootDirectory.FullName); // 保存路径信息到节点的 Tag 属性
-                            //driveNode.Nodes.Add(SubDirectoryDummyTag); // 添加一个虚拟子节点，表示有子文件夹
-                            treeViewDir.Nodes.Add(driveNode);
-                        }
-                        break;
-                    case DriveType.Network:
-                        {
-                            /* TODO: either: ...
-                             * - inspect if GetDrives won't return Network (as I've seen, not sure
-                             * - rm this case-clause
-                             */
-                        }
-                        break;
-                }
-            }
-        }
 
         #region treeView
         private void treeViewDirBindedRender(TreeNode node)
@@ -355,6 +358,8 @@ namespace file_manage
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             var curTreeNode = treeViewDir.SelectedNode;
+            if (curTreeNode == null) // if we've just started this app, haven't entered any directory
+                return;
             curTreeNode.Nodes.Clear();
             curTreeNode.Nodes.Add(SubDirectoryDummyTag);
             treeViewDirBindedRender(curTreeNode);
