@@ -1,7 +1,7 @@
 ﻿/// i18n for 2 languages
 using System;
 
-namespace file_manage
+namespace winforms_explorer
 {
     /// <summary>
     /// Assume L is a two-item enum.

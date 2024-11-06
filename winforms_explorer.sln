@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34009.444
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "file_manage", "file_manage.csproj", "{D01AB09C-2976-46CE-AF0A-978DE7418BBE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "winforms_explorer", "winforms_explorer.csproj", "{D01AB09C-2976-46CE-AF0A-978DE7418BBE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

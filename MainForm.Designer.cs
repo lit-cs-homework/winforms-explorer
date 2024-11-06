@@ -1,4 +1,4 @@
-﻿namespace file_manage
+﻿namespace winforms_explorer
 {
     partial class MainForm
     {

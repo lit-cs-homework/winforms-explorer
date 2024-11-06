@@ -6,7 +6,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Runtime.Versioning;
 
-namespace file_manage
+namespace winforms_explorer
 {
     using static Utils;
 

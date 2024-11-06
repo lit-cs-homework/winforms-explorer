@@ -2,7 +2,7 @@
 using System.IO;
 using System.Windows.Forms;
 
-namespace file_manage
+namespace winforms_explorer
 {
     internal static class Utils
     {

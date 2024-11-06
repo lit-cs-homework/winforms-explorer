@@ -1,7 +1,7 @@
 ﻿
 using System.Windows.Forms;
 
-namespace file_manage
+namespace winforms_explorer
 {
 
     public static class ViewUtils
