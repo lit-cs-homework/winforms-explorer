@@ -17,5 +17,17 @@ namespace file_manage
                 n.Expand();
             }
         }
+        public static void KeepWidthOfParent(this Control ctl, double factor = 1.0)
+        {
+            var parent = ctl.Parent;
+            void up()
+            {
+                ctl.Width = (int)(parent.Width * factor);
+            }
+            up();
+            parent.Resize += (sender, e) => {
+                up();
+            };
+        }
     }
 }

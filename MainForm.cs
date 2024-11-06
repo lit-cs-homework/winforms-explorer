@@ -13,7 +13,15 @@ namespace file_manage
         #region i18n
         protected enum ZhEn { Zh, En }
         protected I18N2<ZhEn> i18n;
-        protected ZhEn Lang {  get => i18n.Lang; set => i18n.Lang=value; }
+        protected ZhEn Lang
+        {
+            get => i18n.Lang;
+            set
+            {
+                i18n.Lang = value;
+                UpdateToolTips();
+            }
+        }
 
         /// <summary>
         /// like `_` of gettext,
@@ -24,12 +32,24 @@ namespace file_manage
         /// <returns></returns>
         protected string _2(string zh, string en) => i18n.T(zh, en);
 
+        private void InitLangSelector(int selectedIdx)
+        {
+            comboBoxLang.Items.AddRange(LangText);
+            comboBoxLang.SelectedIndex = selectedIdx;
+        }
         protected void InitLocaleFromSystemConfig()
         {
             var culture = System.Globalization.CultureInfo.CurrentCulture;
             var e = ZhEn.En;
             if (culture.Name == "zh" || culture.Name == "zh-Hans") e = ZhEn.Zh;
             i18n = new I18N2<ZhEn>(e);
+        }
+        private static readonly string[] LangText = { "zh", "en" };
+        private void comboBoxLang_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var cbox = (ComboBox)sender;
+            cbox.SelectedItem = LangText[cbox.SelectedIndex];
+            Lang = (ZhEn)cbox.SelectedIndex;
         }
         #endregion i18n
 
@@ -43,27 +63,27 @@ namespace file_manage
             );
 
         #endregion utils
-
+        
         #region init
         public MainForm()
         {
-
-            InitLocaleFromSystemConfig();  // must be before InitToolTip
-
             InitializeComponent();
-            InitToolTip();
-            UpdateTextboxPathWidth();
+
+            InitLocaleFromSystemConfig();  // must be before InitToolTip and after InitalizeComponent
+            InitToolTips();
+            InitLangSelector((int)i18n.Lang); // must be after InitToolTips
+
+            InitAutoUpdateWidth();
 
         }
-        protected void UpdateTextboxPathWidth() =>
-            textBoxPath.Width = (int)(textBoxPath.Parent.Width * 0.85);
+
+        protected void InitAutoUpdateWidth()
+        {
+            flowLayoutPanelInput.KeepWidthOfParent(0.85);
+            textBoxPath.KeepWidthOfParent(0.85);
+        }
 
         private void MainForm_Load(object sender, EventArgs e) => ListDrives();
-        private void MainForm_Resize(object sender, EventArgs e)
-        {
-            UpdateTextboxPathWidth();
- 
-        }
         #endregion init
 
         #region treeView
@@ -270,12 +290,23 @@ namespace file_manage
                 ShowAlways = true,
             };
 
-        protected void InitToolTip()
+        protected ToolTip toolTipLong, toolTipShort;
+        protected void InitToolTips()
         {
-            var toolTip = newToopTip(700);
-            toolTip.SetToolTip(btnRefresh, _2("刷新", "Refresh"));
-            toolTip.SetToolTip(btnNavParentDir, _2("上一级目录", "Go to parent dir"));
-            newToopTip(100).SetToolTip(textBoxPath, _2("点击复制", "Click to copy to clipboard"));
+            toolTipLong = newToopTip(700);
+            toolTipShort = newToopTip(100);
+            UpdateToolTips();
+        }
+
+        protected void UpdateToolTips()
+        {
+            // must remove the old to eval `_2` again.
+            toolTipLong.RemoveAll();
+            toolTipShort.RemoveAll();
+
+            toolTipLong.SetToolTip(btnRefresh, _2("刷新", "Refresh"));
+            toolTipLong.SetToolTip(btnNavParentDir, _2("上一级目录", "Go to parent dir"));
+            toolTipShort.SetToolTip(textBoxPath, _2("点击复制", "Click to copy to clipboard"));
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
