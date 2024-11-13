@@ -58,7 +58,7 @@
             // 
             splitContainerDirItem.Dock = System.Windows.Forms.DockStyle.Fill;
             splitContainerDirItem.Location = new System.Drawing.Point(0, 0);
-            splitContainerDirItem.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            splitContainerDirItem.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             splitContainerDirItem.Name = "splitContainerDirItem";
             // 
             // splitContainerDirItem.Panel1
@@ -68,9 +68,8 @@
             // splitContainerDirItem.Panel2
             // 
             splitContainerDirItem.Panel2.Controls.Add(listViewItem);
-            splitContainerDirItem.Size = new System.Drawing.Size(1365, 931);
-            splitContainerDirItem.SplitterDistance = 392;
-            splitContainerDirItem.SplitterWidth = 5;
+            splitContainerDirItem.Size = new System.Drawing.Size(1183, 785);
+            splitContainerDirItem.SplitterDistance = 339;
             splitContainerDirItem.TabIndex = 0;
             // 
             // treeViewDir
@@ -79,10 +78,10 @@
             treeViewDir.ImageIndex = 1;
             treeViewDir.ImageList = imageListDirView;
             treeViewDir.Location = new System.Drawing.Point(0, 0);
-            treeViewDir.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            treeViewDir.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             treeViewDir.Name = "treeViewDir";
             treeViewDir.SelectedImageIndex = 0;
-            treeViewDir.Size = new System.Drawing.Size(392, 931);
+            treeViewDir.Size = new System.Drawing.Size(339, 785);
             treeViewDir.TabIndex = 0;
             treeViewDir.AfterCollapse += treeViewDir_AfterCollapse;
             treeViewDir.AfterExpand += treeViewDir_AfterExpand;
@@ -100,10 +99,10 @@
             // 
             listViewItem.Dock = System.Windows.Forms.DockStyle.Fill;
             listViewItem.Location = new System.Drawing.Point(0, 0);
-            listViewItem.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            listViewItem.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             listViewItem.MultiSelect = false;
             listViewItem.Name = "listViewItem";
-            listViewItem.Size = new System.Drawing.Size(968, 931);
+            listViewItem.Size = new System.Drawing.Size(840, 785);
             listViewItem.SmallImageList = imageListDirView;
             listViewItem.TabIndex = 0;
             listViewItem.UseCompatibleStateImageBehavior = false;
@@ -114,7 +113,7 @@
             // 
             splitContainerMain.Dock = System.Windows.Forms.DockStyle.Fill;
             splitContainerMain.Location = new System.Drawing.Point(0, 0);
-            splitContainerMain.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            splitContainerMain.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             splitContainerMain.Name = "splitContainerMain";
             splitContainerMain.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -125,9 +124,9 @@
             // splitContainerMain.Panel2
             // 
             splitContainerMain.Panel2.Controls.Add(splitContainerDirItem);
-            splitContainerMain.Size = new System.Drawing.Size(1365, 1039);
-            splitContainerMain.SplitterDistance = 102;
-            splitContainerMain.SplitterWidth = 6;
+            splitContainerMain.Size = new System.Drawing.Size(1183, 875);
+            splitContainerMain.SplitterDistance = 85;
+            splitContainerMain.SplitterWidth = 5;
             splitContainerMain.TabIndex = 1;
             // 
             // flowLayoutPanelHeader
@@ -137,28 +136,28 @@
             flowLayoutPanelHeader.Controls.Add(flowLayoutPanelInput);
             flowLayoutPanelHeader.Dock = System.Windows.Forms.DockStyle.Fill;
             flowLayoutPanelHeader.Location = new System.Drawing.Point(0, 0);
-            flowLayoutPanelHeader.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            flowLayoutPanelHeader.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             flowLayoutPanelHeader.Name = "flowLayoutPanelHeader";
-            flowLayoutPanelHeader.Size = new System.Drawing.Size(1365, 102);
+            flowLayoutPanelHeader.Size = new System.Drawing.Size(1183, 85);
             flowLayoutPanelHeader.TabIndex = 5;
             // 
             // flowLayoutPanelBtns
             // 
             flowLayoutPanelBtns.Controls.Add(btnRefresh);
             flowLayoutPanelBtns.Controls.Add(btnNavParentDir);
-            flowLayoutPanelBtns.Location = new System.Drawing.Point(4, 5);
-            flowLayoutPanelBtns.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            flowLayoutPanelBtns.Location = new System.Drawing.Point(3, 4);
+            flowLayoutPanelBtns.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             flowLayoutPanelBtns.Name = "flowLayoutPanelBtns";
-            flowLayoutPanelBtns.Size = new System.Drawing.Size(130, 84);
+            flowLayoutPanelBtns.Size = new System.Drawing.Size(113, 71);
             flowLayoutPanelBtns.TabIndex = 4;
             // 
             // btnRefresh
             // 
             btnRefresh.Font = new System.Drawing.Font("SimSun", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 134);
-            btnRefresh.Location = new System.Drawing.Point(8, 10);
-            btnRefresh.Margin = new System.Windows.Forms.Padding(8, 10, 8, 10);
+            btnRefresh.Location = new System.Drawing.Point(7, 8);
+            btnRefresh.Margin = new System.Windows.Forms.Padding(7, 8, 7, 8);
             btnRefresh.Name = "btnRefresh";
-            btnRefresh.Size = new System.Drawing.Size(50, 76);
+            btnRefresh.Size = new System.Drawing.Size(43, 64);
             btnRefresh.TabIndex = 1;
             btnRefresh.Text = "🗘";
             btnRefresh.UseVisualStyleBackColor = true;
@@ -166,10 +165,10 @@
             // 
             // btnNavParentDir
             // 
-            btnNavParentDir.Location = new System.Drawing.Point(70, 5);
-            btnNavParentDir.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            btnNavParentDir.Location = new System.Drawing.Point(60, 4);
+            btnNavParentDir.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             btnNavParentDir.Name = "btnNavParentDir";
-            btnNavParentDir.Size = new System.Drawing.Size(46, 81);
+            btnNavParentDir.Size = new System.Drawing.Size(40, 68);
             btnNavParentDir.TabIndex = 2;
             btnNavParentDir.Text = "<";
             btnNavParentDir.UseVisualStyleBackColor = true;
@@ -181,20 +180,20 @@
             flowLayoutPanelInput.Controls.Add(textBoxPath);
             flowLayoutPanelInput.Controls.Add(comboBoxLang);
             flowLayoutPanelInput.Dock = System.Windows.Forms.DockStyle.Fill;
-            flowLayoutPanelInput.Location = new System.Drawing.Point(142, 5);
-            flowLayoutPanelInput.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            flowLayoutPanelInput.Location = new System.Drawing.Point(122, 4);
+            flowLayoutPanelInput.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             flowLayoutPanelInput.Name = "flowLayoutPanelInput";
-            flowLayoutPanelInput.Size = new System.Drawing.Size(1166, 84);
+            flowLayoutPanelInput.Size = new System.Drawing.Size(1011, 71);
             flowLayoutPanelInput.TabIndex = 5;
             // 
             // textBoxPath
             // 
             textBoxPath.Cursor = System.Windows.Forms.Cursors.Help;
-            textBoxPath.Location = new System.Drawing.Point(5, 6);
-            textBoxPath.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            textBoxPath.Location = new System.Drawing.Point(4, 5);
+            textBoxPath.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             textBoxPath.Name = "textBoxPath";
             textBoxPath.ReadOnly = true;
-            textBoxPath.Size = new System.Drawing.Size(1034, 45);
+            textBoxPath.Size = new System.Drawing.Size(897, 39);
             textBoxPath.TabIndex = 0;
             textBoxPath.MouseClick += textBoxPath_MouseClick;
             textBoxPath.KeyDown += textBoxPath_KeyDown;
@@ -203,20 +202,20 @@
             // 
             comboBoxLang.Font = new System.Drawing.Font("SimSun", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 134);
             comboBoxLang.FormattingEnabled = true;
-            comboBoxLang.Location = new System.Drawing.Point(1048, 5);
-            comboBoxLang.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            comboBoxLang.Location = new System.Drawing.Point(908, 4);
+            comboBoxLang.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             comboBoxLang.Name = "comboBoxLang";
-            comboBoxLang.Size = new System.Drawing.Size(64, 35);
+            comboBoxLang.Size = new System.Drawing.Size(69, 35);
             comboBoxLang.TabIndex = 3;
             comboBoxLang.SelectedIndexChanged += comboBoxLang_SelectedIndexChanged;
             // 
             // MainForm
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(15F, 38F);
+            AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1365, 1039);
+            ClientSize = new System.Drawing.Size(1183, 875);
             Controls.Add(splitContainerMain);
-            Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             Name = "MainForm";
             Text = "FileMgr";
             Load += MainForm_Load;
